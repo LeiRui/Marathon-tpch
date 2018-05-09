@@ -89,7 +89,7 @@ public class Test_calculate {
             for(int k=0;k<ckn;k++){
                 for(int j=0;j<queryPicture.qpernum[k];j++){
                     int direct = unify.qChooseX[i][k][j];
-                    String sql = queryPicture.getSql(Constant.ks, Constant.cf,Constant.pkey,
+                    String sql = queryPicture.getSql(Constant.ks, Constant.cf[direct],Constant.pkey,
                             CKdist,unify.rangeQueries[i][k]);
                     if(direct==0) {
                         r1.add(sql);

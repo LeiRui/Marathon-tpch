@@ -57,18 +57,21 @@ public class Test {
         // 查询参数
         double[][] starts = new double[ckn][];
         double[][] lengths = new double[ckn][];
-        int[] qpernum = new int[]{10,10,8,8,4,4,2,2,1,1}; // 增大一个批次中的num比直接增加totalQueryBatchNum要计算的快一些，因为一个batch之内的qcki是一样的，choose用同一组随机选
+        int[] qpernum = new int[]{1000,900,800,700,600,500,300,200,100,100};
+        // 增大一个批次中的num比直接增加totalQueryBatchNum要计算的快一些，因为一个batch之内的qcki是一样的，choose用同一组随机选
+        // 但是不可以 还是要增大totalQueryBatchNum 这样才是100次随机符合分布 否则则是比如1000条重复固定参数的查询 可能刚好范围分布时选的
+        // 参数比较极端 就干扰了qpermnum作用 除非starts和length都固定 不要随机
         //5000条
 
         for(int i=0;i<ckn;i++){
 //            starts[i] = new double[]{0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
 //            lengths[i] = new double[]{0,0,0.154,0.308,0.385,0.077,0.077,0,0,0};
-            starts[i] = new double[]{0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
-            lengths[i] = new double[]{0,0,0.154,0.308,0.385,0.077,0.077,0,0,0};
+            starts[i] = new double[]{0,0,0,0,0,0,0,0,0,0};
+            lengths[i] = new double[]{0,0,0,0,0,0,0,0,0,1};
             //lengths[i] = new double[]{0,0,0,0,0,0,0,0,0,0};
 //            qpernum[i] = 1;
         }
-        QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,100);
+        QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,1);
 
         int X = 3;
         Unify unify = new Unify(totalRowNumber,
@@ -79,10 +82,10 @@ public class Test {
         unify.isDiffReplicated = false;
         unify.combine();
 
-        unify.calculate(new AckSeq[]{new AckSeq(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1}),
-                new AckSeq(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1}),
-                new AckSeq(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
-        });
+//        unify.calculate(new AckSeq[]{new AckSeq(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1}),
+//                new AckSeq(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1}),
+//                new AckSeq(new int[]{10, 9, 8, 7, 6, 5, 4, 3, 2, 1})
+//        });
 
     }
 }

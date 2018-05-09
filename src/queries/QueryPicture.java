@@ -45,16 +45,16 @@ public class QueryPicture {
             //qack_p[i]=qck_p_abs[ackindex]*(pqColumn.xmax_ - pqColumn.xmin_) + pqColumn.xmin_;
             for (int j = 0; j < totalQueryBatchNum; j++) {
                 // 确定这个batch内第i个ck列的单范围查询的描述参数数值
-                double qck_r1_abs = getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_;
-                double qck_r2_abs = qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_;
-                double[] qck_p_abs = new double[ckn];
+                int qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+                int qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+                int[] qck_p_abs = new int[ckn];
                 for (int z = 0; z < ckn; z++) {// 单查询对点查列视为均匀随机取值吧
-                    qck_p_abs[z] = Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
+                    qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
                     if(qck_p_abs[z] >= CKdist.get(z).xmax_) {
-                        qck_p_abs[z] = CKdist.get(z).xmax_-1;
+                        qck_p_abs[z] = (int)CKdist.get(z).xmax_-1;
                     }
                     else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
-                        qck_p_abs[z] = CKdist.get(z).xmin_;
+                        qck_p_abs[z] = (int)CKdist.get(z).xmin_;
                     }
                     //System.out.println(qck_p_abs[z]);
                     // TODO round是为了sql时int点查安全起见 否则直接检查不存在返回了
@@ -69,7 +69,7 @@ public class QueryPicture {
         int ckn = CKdist.size();
         for(int k=0;k<ckn;k++) {
             if(k==q.qckn-1) { // qckn从1开始
-                String tmp = " and ck%d>=%.2f and ck%d<=%.2f";
+                String tmp = " and ck%d>=%d and ck%d<=%d";
                 q_format+=String.format(tmp, k+1,q.qck_r1_abs,k+1,q.qck_r2_abs);
             }
             else {
@@ -91,17 +91,17 @@ public class QueryPicture {
             double[] dist_length = lengths[i];
             for (int j = 0; j < totalQueryBatchNum; j++) {
                 // 确定这个batch内第i个ck列的单范围查询的描述参数数值
-                double qck_r1_abs = getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_;
-                double qck_r2_abs = qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_);
-                double[] qck_p_abs = new double[ckn];
+                int qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+                int qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+                int[] qck_p_abs = new int[ckn];
                 for (int z = 0; z < ckn; z++) {// 单查询对点查列视为均匀随机取值吧
-                    qck_p_abs[z] = Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
+                    qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
                     // TODO round是为了sql时int点查安全起见 否则直接检查不存在返回了
                     if(qck_p_abs[z] >= CKdist.get(z).xmax_) {
-                        qck_p_abs[z] = CKdist.get(z).xmax_-1;
+                        qck_p_abs[z] = (int)CKdist.get(z).xmax_-1;
                     }
                     else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
-                        qck_p_abs[z] = CKdist.get(z).xmin_;
+                        qck_p_abs[z] = (int)CKdist.get(z).xmin_;
                     }
                 }
                 res[j][i] = new RangeQuery(i, qck_r1_abs, qck_r2_abs, true, true, qck_p_abs);
