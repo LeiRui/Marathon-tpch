@@ -1,9 +1,11 @@
 package common;
 
 public class Constant {
-    public static String ks = "reliant_8million";
-    public static String[] cf = new String[]{"defaulttable","defaulttable","defaulttable"};
-    public static int pkey = 1;
+//    public static String ks = "reliant_1000million";
+    public static String ks = "test";
+//    public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
+    public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
+    public static int[] pkey = new int[]{1,1,1};
 
     // 数据存储参数
     public static int rowSize = 52;

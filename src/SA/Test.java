@@ -74,7 +74,7 @@ public class Test {
         QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,1);
 
         int X = 3;
-        Unify unify = new Unify(totalRowNumber,
+        Unify_new unify = new Unify_new(totalRowNumber,
                 ckn, CKdist,
                 rowSize,fetchRowCnt,costModel_k,costModel_b,cost_session_around,cost_request_around,
                 queryPicture,

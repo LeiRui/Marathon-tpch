@@ -20,30 +20,36 @@ public class QueryPicture {
     // 单查询对点查列视为均匀随机取值吧
 
     public int totalQueryBatchNum;
+    public int totalQueryNum;
 
     public QueryPicture(double[][] starts, double[][] lengths, int[] qpernum, int totalQueryBatchNum) {
-//        starts = new double[ckn][];
-//        lengths = new double[ckn][];
-//        qpernum = new int[ckn];
         this.starts = starts;
         this.lengths = lengths;
         this.qpernum = qpernum;
         this.totalQueryBatchNum = totalQueryBatchNum;
         ckn = qpernum.length;
+        int sum = 0;
+        for(int i=0;i<qpernum.length;i++) {
+            sum+=qpernum[i];
+        }
+        totalQueryNum = sum*totalQueryBatchNum;
     }
 
     // 输入各列真实分布参数、总查询批次，输出符合描述参数分布的模拟确定查询参数集合
-    public RangeQuery[][] getDefinite(List<Column_ian> CKdist) {
-        RangeQuery[][] res = new RangeQuery[totalQueryBatchNum][ckn]; //TODO 一个batch内查询参数就先用同一个重复若干次吧
-        for (int i = 0; i < totalQueryBatchNum; i++) {
-            res[i] = new RangeQuery[ckn];
+    public List<RangeQuery[]> getDefinite(List<Column_ian> CKdist) {
+        List<RangeQuery[]> res = new ArrayList<>();
+        for(int i=0;i<ckn;i++) {
+            RangeQuery[] res_ = new RangeQuery[totalQueryBatchNum*qpernum[i]];
+            res.add(res_);
         }
+
         for (int i = 0; i < ckn; i++) {
             Column_ian columnIan = CKdist.get(i);
             double[] dist_start = starts[i];
             double[] dist_length = lengths[i];
-            //qack_p[i]=qck_p_abs[ackindex]*(pqColumn.xmax_ - pqColumn.xmin_) + pqColumn.xmin_;
-            for (int j = 0; j < totalQueryBatchNum; j++) {
+            RangeQuery[] res_ = res.get(i);
+            int singleSum = res_.length;
+            for (int j = 0; j < singleSum; j++) {
                 // 确定这个batch内第i个ck列的单范围查询的描述参数数值
                 int qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
                 int qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
@@ -56,10 +62,9 @@ public class QueryPicture {
                     else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
                         qck_p_abs[z] = (int)CKdist.get(z).xmin_;
                     }
-                    //System.out.println(qck_p_abs[z]);
                     // TODO round是为了sql时int点查安全起见 否则直接检查不存在返回了
                 }
-                res[j][i] = new RangeQuery(i+1, qck_r1_abs, qck_r2_abs, true, true, qck_p_abs);
+                res_[j] = new RangeQuery(i+1, qck_r1_abs, qck_r2_abs, true, true, qck_p_abs);
             }
         }
         return res;

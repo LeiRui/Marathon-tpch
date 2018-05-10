@@ -1,7 +1,7 @@
 package Man1_1;
 
 import HModel.Column_ian;
-import SA.Unify;
+import SA.Unify_new;
 import common.Constant;
 import queries.QueryPicture;
 import replicas.AckSeq;
@@ -10,10 +10,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+157.95s vs 441.45
+ */
 public class Test_calculate{
         public static void main(String[] args) {
             // 数据分布参数
-            BigDecimal totalRowNumber = new BigDecimal("8000000");
+            BigDecimal totalRowNumber = new BigDecimal("40000000");
 
             List<Column_ian> CKdist = new ArrayList<Column_ian>();
             double step = 1;
@@ -65,20 +68,37 @@ public class Test_calculate{
                 starts[i] = new double[]{0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
                 lengths[i] = new double[]{0.08,0.2,0.28,0.16,0.12,0.04,0.04,0.04,0.04,0};
             }
-            QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,100);
+            QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,15);
 
             int X = 3;
-            Unify unify = new Unify(totalRowNumber,
+            Unify_new unify_new = new Unify_new(totalRowNumber,
                     ckn, CKdist,
                     rowSize, fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around,
                     queryPicture,
                     X);
-            unify.isDiffReplicated = false;
 
-            unify.calculate_unit(new AckSeq[]{new AckSeq(new int[]{8,9,10,7,6,5,2,4,1,3}),
-                    new AckSeq(new int[]{8,9,10,7,6,5,2,4,1,3}),
-                    new AckSeq(new int[]{8,9,10,7,6,5,2,4,1,3})
+            unify_new.isDiffReplicated = false;
+            unify_new.calculate_unit(new AckSeq[]{new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8}),
+                    new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8}),
+                    new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8})
             });
+
+//            unify_new.isDiffReplicated = true;
+//            unify_new.calculate_unit(new AckSeq[]{new AckSeq(new int[]{5,8,6,9,2,10,3,1,4,7}),
+//                    new AckSeq(new int[]{10,5,6,2,8,3,1,4,7,9}), // 10,5,6,2,8,3,1,4,7,9
+//                    new AckSeq(new int[]{9,8,3,4,1,7,10,6,5,2}) //9,8,3,4,1,7,10,6,5,2
+//            });//5,8,6,9,2,10,3,1,4,7
+
+//            unify_new.isDiffReplicated = false;
+//            unify_new.calculate_unit(new AckSeq[]{new AckSeq(new int[]{10,9,8,7,6,5,4,3,2,1}),
+//                    new AckSeq(new int[]{10,9,8,7,6,5,4,3,2,1}), // 10,5,6,2,8,3,1,4,7,9
+//                    new AckSeq(new int[]{10,9,8,7,6,5,4,3,2,1}) //9,8,3,4,1,7,10,6,5,2
+//            });//5,8,6,9,2,10,3,1,4,7
+//            unify_new.calculate_unit(new AckSeq[]{new AckSeq(new int[]{9,10,8,7,6,5,4,2,3,1}),
+//                    new AckSeq(new int[]{9,10,8,7,6,5,4,2,3,1}), // 10,5,6,2,8,3,1,4,7,9
+//                    new AckSeq(new int[]{9,10,8,7,6,5,4,2,3,1}) //9,8,3,4,1,7,10,6,5,2
+//            });//5,8,6,9,2,10,3,1,4,7
+
 
         }
 }

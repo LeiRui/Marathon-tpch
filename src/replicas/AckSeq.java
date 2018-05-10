@@ -30,9 +30,9 @@ public class AckSeq {
     public String toString() {
         String str = "[";
         for(int i=0;i<length;i++) {
-            str+=ackSeq[i];
+            str=str+"ck"+ackSeq[i];
             if(i!= length-1)
-                str+="-";
+                str+=",";
         }
         str+="]";
         return str;

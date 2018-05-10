@@ -50,13 +50,13 @@ public class Test_small {
         QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,100);
 
         int X = 3;
-        Unify unify = new Unify(totalRowNumber,
+        Unify_new unify_new = new Unify_new(totalRowNumber,
                 ckn, CKdist,
                 Constant.rowSize,Constant.fetchRowCnt,Constant.costModel_k,Constant.costModel_b,Constant.cost_session_around,Constant.cost_request_around,
                 queryPicture,
                 X);
-        unify.isDiffReplicated = true;
-        unify.combine();
+        unify_new.isDiffReplicated = true;
+        unify_new.combine();
 
 //        unify.calculate_unit(new AckSeq[]{new AckSeq(new int[]{1,2,3}),
 //                new AckSeq(new int[]{1,2,3}),
