@@ -1,7 +1,8 @@
 package Man1_1;
 
 import HModel.Column_ian;
-import SA.Unify_new;
+import SA.Unify_new_fast;
+import SA.Unify_new_fast;
 import common.Constant;
 import queries.QueryPicture;
 import replicas.AckSeq;
@@ -71,7 +72,7 @@ public class Test_calculate{
             QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,15);
 
             int X = 3;
-            Unify_new unify_new = new Unify_new(totalRowNumber,
+            Unify_new_fast unify_new = new Unify_new_fast(totalRowNumber,
                     ckn, CKdist,
                     rowSize, fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around,
                     queryPicture,

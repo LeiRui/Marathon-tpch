@@ -131,7 +131,7 @@ public class H_ian {
      * @param cost_request_around
      * @return 估计的单查询查询时间代价 单位us
      */
-    public BigDecimal calculate(int fetchRowSize, double costModel_k, double costModel_b, double cost_session_around, double cost_request_around) {
+    public double calculate(int fetchRowSize, double costModel_k, double costModel_b, double cost_session_around, double cost_request_around) {
         resP = 1;
 //        for(int i=0;i<ckn;i++) {
 //            System.out.println(qack_p[i]);
@@ -171,7 +171,7 @@ public class H_ian {
 
         BigDecimal res = new BigDecimal(cost_session_around).add(cost_part).add(candidate_rows_cnt.multiply(new BigDecimal(costModel_k)));
         res = res.divide(new BigDecimal("1000000")); // unit:s
-        return res;
+        return res.doubleValue();
     }
 
     /**

@@ -1,7 +1,7 @@
 package Man1_1;
 
 import HModel.Column_ian;
-import SA.Unify_new;
+import SA.Unify_new_fast;
 import common.Constant;
 import queries.QueryPicture;
 
@@ -63,12 +63,12 @@ public class Test {
         QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,15);//15*60=900个查询吧。。。
 
         int X = 3;
-        Unify_new unify = new Unify_new(totalRowNumber,
+        Unify_new_fast unify = new Unify_new_fast(totalRowNumber,
                 ckn, CKdist,
                 Constant.rowSize,Constant.fetchRowCnt,Constant.costModel_k,Constant.costModel_b,Constant.cost_session_around,Constant.cost_request_around,
                 queryPicture,
                 X);
-        unify.isDiffReplicated = false;
+        unify.isDiffReplicated = true;
         unify.combine();
 
 //        unify.calculate_unit(new AckSeq[]{new AckSeq(new int[]{1,2,3}),

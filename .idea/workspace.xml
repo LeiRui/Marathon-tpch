@@ -2,43 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f6b4052-c31e-4fbd-9d30-88e349e7dd4d" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/SA/Unify_new_fast.java" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/out/production/Marathon/HModel/H_ian.class" afterPath="$PROJECT_DIR$/out/production/Marathon/HModel/H_ian.class" />
       <change beforePath="$PROJECT_DIR$/out/production/Marathon/Man1_1/Test.class" afterPath="$PROJECT_DIR$/out/production/Marathon/Man1_1/Test.class" />
       <change beforePath="$PROJECT_DIR$/out/production/Marathon/Man1_1/Test_calculate.class" afterPath="$PROJECT_DIR$/out/production/Marathon/Man1_1/Test_calculate.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Test.class" afterPath="$PROJECT_DIR$/out/production/Marathon/SA/Test.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Test_calculate.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Test_small.class" afterPath="$PROJECT_DIR$/out/production/Marathon/SA/Test_small.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Unify.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Unify_fast.class" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/common/Constant.class" afterPath="$PROJECT_DIR$/out/production/Marathon/common/Constant.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/queries/QueryPicture.class" afterPath="$PROJECT_DIR$/out/production/Marathon/queries/QueryPicture.class" />
-      <change beforePath="$PROJECT_DIR$/out/production/Marathon/replicas/AckSeq.class" afterPath="$PROJECT_DIR$/out/production/Marathon/replicas/AckSeq.class" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_defaulttable_R1[8-9-10-7-6-5-2-4-1-3]_381.39_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_defaulttable_R2[8-9-10-7-6-5-2-4-1-3]_381.39_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_defaulttable_R3[8-9-10-7-6-5-2-4-1-3]_381.39_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_defaulttable_R[8-9-10-7-6-5-2-4-1-3]_381.39_sqlsALL.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_sameopt_R1[10-9-8-7-6-5-4-3-2-1]_192.55_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_sameopt_R2[10-9-8-7-6-5-4-3-2-1]_192.55_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_sameopt_R3[10-9-8-7-6-5-4-3-2-1]_192.55_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_8million_sameopt_R[10-9-8-7-6-5-4-3-2-1]_192.55_sqlsALL.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_defaulttable_R1[6-3-7-10-9-4-5-2-1-8]_132.33_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_defaulttable_R2[6-3-7-10-9-4-5-2-1-8]_132.33_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_defaulttable_R3[6-3-7-10-9-4-5-2-1-8]_132.33_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_defaulttable_R[6-3-7-10-9-4-5-2-1-8]_132.33_sqlsALL.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_diff_8million_df1_R1[4-7-9-8-2-3-6-5-1-10]_40.08_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_diff_8million_df2_R2[9-3-2-6-4-7-8-5-1-10]_40.08_sqls.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/reliant_diff_8million_df3_R3[7-1-3-4-8-9-10-6-5-2]_40.08_sqls.txt" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Test.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Test_small.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/out/production/Marathon/SA/Unify_new.class" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/src/HModel/H_ian.java" afterPath="$PROJECT_DIR$/src/HModel/H_ian.java" />
       <change beforePath="$PROJECT_DIR$/src/Man1_1/Test.java" afterPath="$PROJECT_DIR$/src/Man1_1/Test.java" />
       <change beforePath="$PROJECT_DIR$/src/Man1_1/Test_calculate.java" afterPath="$PROJECT_DIR$/src/Man1_1/Test_calculate.java" />
       <change beforePath="$PROJECT_DIR$/src/SA/Test.java" afterPath="$PROJECT_DIR$/src/SA/Test.java" />
-      <change beforePath="$PROJECT_DIR$/src/SA/Test_calculate.java" afterPath="" />
       <change beforePath="$PROJECT_DIR$/src/SA/Test_small.java" afterPath="$PROJECT_DIR$/src/SA/Test_small.java" />
-      <change beforePath="$PROJECT_DIR$/src/SA/Unify.java" afterPath="$PROJECT_DIR$/src/SA/Unify.java" />
-      <change beforePath="$PROJECT_DIR$/src/SA/Unify_fast.java" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/src/common/Constant.java" afterPath="$PROJECT_DIR$/src/common/Constant.java" />
-      <change beforePath="$PROJECT_DIR$/src/queries/QueryPicture.java" afterPath="$PROJECT_DIR$/src/queries/QueryPicture.java" />
-      <change beforePath="$PROJECT_DIR$/src/replicas/AckSeq.java" afterPath="$PROJECT_DIR$/src/replicas/AckSeq.java" />
+      <change beforePath="$PROJECT_DIR$/src/SA/Unify_new.java" afterPath="$PROJECT_DIR$/src/SA/Unify_new.java" />
+      <change beforePath="$PROJECT_DIR$/src/SA/Unify_new_fast.java" afterPath="$PROJECT_DIR$/src/SA/Unify_new_fast.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,14 +32,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Man1_1/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="69" column="19" lean-forward="true" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
+            <state relative-caret-position="323">
+              <caret line="71" column="24" lean-forward="true" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#497#505#0" expanded="true" />
+                <element signature="e#502#510#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -71,31 +48,11 @@
       <file leaf-file-name="Test_calculate.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Man1_1/Test_calculate.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="26" column="55" lean-forward="true" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
+            <state relative-caret-position="400">
+              <caret line="82" column="26" lean-forward="true" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ArrayList.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/util/ArrayList.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="432" column="0" lean-forward="false" selection-start-line="432" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AckSeq.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/replicas/AckSeq.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="125">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -103,15 +60,9 @@
       <file leaf-file-name="Unify_new.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SA/Unify_new.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16175">
-              <caret line="662" column="13" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="697" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5102#5114#0" expanded="true" />
-                <element signature="e#6773#6782#0" expanded="true" />
-                <element signature="e#10065#10077#0" expanded="true" />
-                <element signature="e#11755#11764#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="462">
+              <caret line="144" column="69" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="697" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -119,24 +70,24 @@
       <file leaf-file-name="Unify_new_fast.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/SA/Unify_new_fast.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="122" column="42" lean-forward="false" selection-start-line="122" selection-start-column="42" selection-end-line="122" selection-end-column="42" />
+            <state relative-caret-position="87">
+              <caret line="556" column="31" lean-forward="true" selection-start-line="556" selection-start-column="31" selection-end-line="556" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5219#5231#0" expanded="true" />
-                <element signature="e#6890#6899#0" expanded="true" />
-                <element signature="e#10182#10194#0" expanded="true" />
-                <element signature="e#11872#11881#0" expanded="true" />
+                <element signature="e#5153#5161#0" expanded="true" />
+                <element signature="e#6740#6749#0" expanded="true" />
+                <element signature="e#9892#9900#0" expanded="true" />
+                <element signature="e#11479#11488#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="H_ian.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="H_ian.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/HModel/H_ian.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="173" column="19" lean-forward="true" selection-start-line="173" selection-start-column="19" selection-end-line="173" selection-end-column="19" />
+            <state relative-caret-position="212">
+              <caret line="133" column="18" lean-forward="false" selection-start-line="133" selection-start-column="18" selection-end-line="133" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -208,17 +159,17 @@
         <option value="$PROJECT_DIR$/src/Man1/Test.java" />
         <option value="$PROJECT_DIR$/src/Man1_1/QueryExecParallel.java" />
         <option value="$PROJECT_DIR$/src/replicas/AckSeq.java" />
-        <option value="$PROJECT_DIR$/src/SA/Test_small.java" />
         <option value="$PROJECT_DIR$/src/SA/Unify.java" />
         <option value="$PROJECT_DIR$/src/SA/Test_calculate.java" />
-        <option value="$PROJECT_DIR$/src/SA/Test.java" />
         <option value="$PROJECT_DIR$/src/queries/QueryPicture.java" />
         <option value="$PROJECT_DIR$/src/common/Constant.java" />
-        <option value="$PROJECT_DIR$/src/SA/Unify_new.java" />
-        <option value="$PROJECT_DIR$/src/Man1_1/Test.java" />
-        <option value="$PROJECT_DIR$/src/Man1_1/Test_calculate.java" />
-        <option value="$PROJECT_DIR$/src/SA/Unify_new_fast.java" />
         <option value="$PROJECT_DIR$/src/HModel/H_ian.java" />
+        <option value="$PROJECT_DIR$/src/SA/Unify_new_fast.java" />
+        <option value="$PROJECT_DIR$/src/SA/Unify_new.java" />
+        <option value="$PROJECT_DIR$/src/Man1_1/Test_calculate.java" />
+        <option value="$PROJECT_DIR$/src/SA/Test.java" />
+        <option value="$PROJECT_DIR$/src/SA/Test_small.java" />
+        <option value="$PROJECT_DIR$/src/Man1_1/Test.java" />
       </list>
     </option>
   </component>
@@ -325,7 +276,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Test_calculate (1)">
+  <component name="RunManager" selected="Application.Test (2)">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
@@ -511,8 +462,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Application.Test_calculate (1)" />
-        <item index="1" class="java.lang.String" itemvalue="Application.Test (2)" />
+        <item index="0" class="java.lang.String" itemvalue="Application.Test (2)" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Test_calculate (1)" />
         <item index="2" class="java.lang.String" itemvalue="Application.Test_small" />
         <item index="3" class="java.lang.String" itemvalue="Application.Test" />
         <item index="4" class="java.lang.String" itemvalue="Application.Test_calculate" />
@@ -542,6 +493,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -552,16 +504,16 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2118551" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29308453" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296875" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2107574" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2349067" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="ANTLR Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16197917" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -621,14 +573,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1175">
           <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HModel/Column_ian.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="142">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -724,76 +668,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SA/Test.java">
+    <entry file="file://$PROJECT_DIR$/src/HModel/H_ian.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
-          <caret line="76" column="40" lean-forward="false" selection-start-line="76" selection-start-column="40" selection-end-line="76" selection-end-column="40" />
+          <caret line="133" column="18" lean-forward="false" selection-start-line="133" selection-start-column="18" selection-end-line="133" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/SA/Test_small.java">
+    <entry file="file://$PROJECT_DIR$/src/SA/Unify_new_fast.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-215">
-          <caret line="34" column="0" lean-forward="true" selection-start-line="34" selection-start-column="0" selection-end-line="34" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Man1_1/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="69" column="19" lean-forward="true" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
+        <state relative-caret-position="87">
+          <caret line="556" column="31" lean-forward="true" selection-start-line="556" selection-start-column="31" selection-end-line="556" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#497#505#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Man1_1/Test_calculate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="26" column="55" lean-forward="true" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#5153#5161#0" expanded="true" />
+            <element signature="e#6740#6749#0" expanded="true" />
+            <element signature="e#9892#9900#0" expanded="true" />
+            <element signature="e#11479#11488#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/SA/Unify_new.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16175">
-          <caret line="662" column="13" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="697" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5102#5114#0" expanded="true" />
-            <element signature="e#6773#6782#0" expanded="true" />
-            <element signature="e#10065#10077#0" expanded="true" />
-            <element signature="e#11755#11764#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/SA/Unify_new_fast.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="122" column="42" lean-forward="false" selection-start-line="122" selection-start-column="42" selection-end-line="122" selection-end-column="42" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5219#5231#0" expanded="true" />
-            <element signature="e#6890#6899#0" expanded="true" />
-            <element signature="e#10182#10194#0" expanded="true" />
-            <element signature="e#11872#11881#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/HModel/H_ian.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="173" column="19" lean-forward="true" selection-start-line="173" selection-start-column="19" selection-end-line="173" selection-end-column="19" />
+        <state relative-caret-position="462">
+          <caret line="144" column="69" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="697" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SA/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="76" column="19" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
+          <folding>
+            <marker date="1525934467171" expanded="false" signature="454:466" ph="&lt;~&gt;" />
+            <marker date="1525934467171" expanded="false" signature="537:545" ph="&lt;~&gt;" />
+            <marker date="1525934467171" expanded="false" signature="674:683" ph="&lt;~&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/SA/Test_small.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="52" column="10" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding>
+            <marker date="1525934480938" expanded="false" signature="453:465" ph="&lt;~&gt;" />
+            <marker date="1525934480938" expanded="false" signature="536:544" ph="&lt;~&gt;" />
+            <marker date="1525934480938" expanded="false" signature="673:682" ph="&lt;~&gt;" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Man1_1/Test_calculate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="82" column="26" lean-forward="true" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/HModel/Column_ian.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Man1_1/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="71" column="24" lean-forward="true" selection-start-line="71" selection-start-column="24" selection-end-line="71" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#502#510#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

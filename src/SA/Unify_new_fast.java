@@ -42,9 +42,9 @@ public class Unify_new_fast{
     // SA
     // X个异构副本组成一个状态解
     // 分流策略：简单的代价最小原则
-    public BigDecimal Cost; // 某个状态解的代价评价：查询按照分流策略分流之后累计的查询代价
-    public BigDecimal Cost_best;// SA每次内圈得到新状态之后维护的最优状态值
-    public BigDecimal Cost_best_bigloop; // SA外圈循环记录每次外圈退温时记忆中保持的最优状态值
+    public double Cost; // 某个状态解的代价评价：查询按照分流策略分流之后累计的查询代价
+    public double Cost_best;// SA每次内圈得到新状态之后维护的最优状态值
+    public double Cost_best_bigloop; // SA外圈循环记录每次外圈退温时记忆中保持的最优状态值
     public Set<XAckSeq> ackSeq_best_step;//记忆性 SA维护的最优状态解集
 
 
@@ -93,9 +93,9 @@ public class Unify_new_fast{
      * @param xackSeq X个异构副本组成一个状态解
      */
     public void calculate(AckSeq[] xackSeq) {
-        BigDecimal[] XCostload = new BigDecimal[X]; // 用于后面取max(sum HB)
+        double[] XCostload = new double[X]; // 用于后面取max(sum HB)
         for(int i=0;i<X;i++) {
-            XCostload[i] = new BigDecimal("0");
+            XCostload[i] = 0;
         }
 
         for(int k=0;k<ckn;k++) { // 遍历一个batch内所有列范围查询 TODO 增量式可以在这里缩小范围
@@ -104,17 +104,17 @@ public class Unify_new_fast{
             for(int i=0;i<singleQueries.length;i++) {
                 RangeQuery q = singleQueries[i];
 
-                BigDecimal[] recordCost = new BigDecimal[X]; // 单查询在X个副本上的代价
+                double[] recordCost = new double[X]; // 单查询在X个副本上的代价
                 List<Integer> chooseX = new ArrayList(); // 记录路由结果，代价一样的副本平分负载
                 chooseX.add(0);
                 H_ian h = new H_ian(totalRowNumber, ckn, CKdist,
                         q.qckn, q.qck_r1_abs, q.qck_r2_abs, q.r1_closed, q.r2_closed, q.qck_p_abs,
                         xackSeq[0].ackSeq);
-                BigDecimal chooseCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
+                double chooseCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
 
                 if (isDiffReplicated) {
                     recordCost[0] = chooseCost;
-                    BigDecimal tmpCost;
+                    double tmpCost;
 
                     for (int j = 1; j < X; j++) { // 遍历X个副本，按照最小HB原则对q分流
                         h = new H_ian(totalRowNumber, ckn, CKdist,
@@ -122,8 +122,8 @@ public class Unify_new_fast{
                                 xackSeq[j].ackSeq);
                         tmpCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
                         recordCost[j] = tmpCost; // 记录
-                        int res = tmpCost.compareTo(chooseCost);
-                        if (res == -1) {
+                        double res = tmpCost-chooseCost;
+                        if (res < 0) {
                             chooseCost = tmpCost; // note 引用
                             chooseX.clear();
                             chooseX.add(j);
@@ -131,8 +131,8 @@ public class Unify_new_fast{
                             chooseX.add(j);
                         }
                     }//X个副本遍历结束，现在已经确定了这个query按照精确最小Cost原则分流到的副本chooseX，以及这个最小Cost等于多少
-                    BigDecimal margin = new BigDecimal(margin_us);//1ms
-                    List<BigDecimal> chooseCostList = new ArrayList<BigDecimal>();
+//                    BigDecimal margin = new BigDecimal(margin_us);//1ms
+                    List<Double> chooseCostList = new ArrayList<Double>();
                     for (int c = 0; c < chooseX.size(); c++) {
                         chooseCostList.add(chooseCost);
                     }
@@ -140,7 +140,7 @@ public class Unify_new_fast{
                         if (chooseX.contains(j)) {
                             continue;
                         }
-                        if (recordCost[j].subtract(chooseCost).compareTo(margin) == -1) {
+                        if (recordCost[j]-chooseCost-margin_us < 0) {
                             chooseX.add(j);
                             chooseCostList.add(recordCost[j]);
                         }
@@ -151,7 +151,7 @@ public class Unify_new_fast{
                     int pos = random.nextInt(chooseNumber);
                     int ultimateChoose = chooseX.get(pos); // NOTE! chooseX.get不能少
                     singleChoose[i] = ultimateChoose;
-                    XCostload[ultimateChoose] = XCostload[ultimateChoose].add(chooseCostList.get(pos));
+                    XCostload[ultimateChoose] += chooseCostList.get(pos);
                 } else {
                     if (noDiffChooseIndex >= X) {
                         noDiffChooseIndex = 0;
@@ -160,7 +160,7 @@ public class Unify_new_fast{
                     noDiffChooseIndex++;
 
                     singleChoose[i] = ultimateChoose;
-                    XCostload[ultimateChoose] = XCostload[ultimateChoose].add(chooseCost);
+                    XCostload[ultimateChoose] += chooseCost;
                 }
             }
         }
@@ -171,8 +171,8 @@ public class Unify_new_fast{
             Cost = XCostload[0];
             maxC.add(0);
             for (int i = 1; i < X; i++) {
-                int res = XCostload[i].compareTo(Cost);
-                if (res == 1) {
+                double res = XCostload[i]-Cost;
+                if (res > 0) {
                     maxC.clear();
                     maxC.add(i);
                     Cost = XCostload[i];
@@ -182,11 +182,11 @@ public class Unify_new_fast{
             }
         }
         else { // 同构时为了减小算法中随机均分还是有的不均对结果的干扰，采用求和平均，重要，因为之前代价相等副本随机均分时的不均取max还是有很大影响
-            Cost = new BigDecimal("0");
+            Cost = 0;
             for(int i=0;i<XCostload.length;i++){
-                Cost=Cost.add(XCostload[i]);
+                Cost+=XCostload[i];
             }
-            Cost=Cost.divide(new BigDecimal(X),10, RoundingMode.HALF_UP);
+            Cost /= X;
         }
 
         //打印结果
@@ -202,9 +202,9 @@ public class Unify_new_fast{
      直接给定一个排序，给出结果包括查询集合
      */
     public void calculate_unit(AckSeq[] xackSeq) {
-        BigDecimal[] XCostload = new BigDecimal[X]; // 用于后面取max(sum HB)
+        double[] XCostload = new double[X]; // 用于后面取max(sum HB)
         for(int i=0;i<X;i++) {
-            XCostload[i] = new BigDecimal("0");
+            XCostload[i] = 0;
         }
 
         for(int k=0;k<ckn;k++) { // 遍历一个batch内所有列范围查询 TODO 增量式可以在这里缩小范围
@@ -213,25 +213,26 @@ public class Unify_new_fast{
             for(int i=0;i<singleQueries.length;i++) {
                 RangeQuery q = singleQueries[i];
 
-                BigDecimal[] recordCost = new BigDecimal[X]; // 单查询在X个副本上的代价
+                double[] recordCost = new double[X]; // 单查询在X个副本上的代价
                 List<Integer> chooseX = new ArrayList(); // 记录路由结果，代价一样的副本平分负载
                 chooseX.add(0);
                 H_ian h = new H_ian(totalRowNumber, ckn, CKdist,
                         q.qckn, q.qck_r1_abs, q.qck_r2_abs, q.r1_closed, q.r2_closed, q.qck_p_abs,
                         xackSeq[0].ackSeq);
-                BigDecimal chooseCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
+                double chooseCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
 
                 if (isDiffReplicated) {
                     recordCost[0] = chooseCost;
-                    BigDecimal tmpCost;
+                    double tmpCost;
+
                     for (int j = 1; j < X; j++) { // 遍历X个副本，按照最小HB原则对q分流
                         h = new H_ian(totalRowNumber, ckn, CKdist,
                                 q.qckn, q.qck_r1_abs, q.qck_r2_abs, q.r1_closed, q.r2_closed, q.qck_p_abs,
                                 xackSeq[j].ackSeq);
                         tmpCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
                         recordCost[j] = tmpCost; // 记录
-                        int res = tmpCost.compareTo(chooseCost);
-                        if (res == -1) {
+                        double res = tmpCost-chooseCost;
+                        if (res < 0) {
                             chooseCost = tmpCost; // note 引用
                             chooseX.clear();
                             chooseX.add(j);
@@ -239,8 +240,8 @@ public class Unify_new_fast{
                             chooseX.add(j);
                         }
                     }//X个副本遍历结束，现在已经确定了这个query按照精确最小Cost原则分流到的副本chooseX，以及这个最小Cost等于多少
-                    BigDecimal margin = new BigDecimal(margin_us);//1ms
-                    List<BigDecimal> chooseCostList = new ArrayList<BigDecimal>();
+//                    BigDecimal margin = new BigDecimal(margin_us);//1ms
+                    List<Double> chooseCostList = new ArrayList<Double>();
                     for (int c = 0; c < chooseX.size(); c++) {
                         chooseCostList.add(chooseCost);
                     }
@@ -248,19 +249,18 @@ public class Unify_new_fast{
                         if (chooseX.contains(j)) {
                             continue;
                         }
-                        if (recordCost[j].subtract(chooseCost).compareTo(margin) == -1) {
+                        if (recordCost[j]-chooseCost-margin_us < 0) {
                             chooseX.add(j);
                             chooseCostList.add(recordCost[j]);
                         }
                     }
-                    // chooseX chooseCostList
-                    //接下来更新XBload和XRload
+                    // 得到扩展版的chooseX&chooseCostList, 接下来更新XCostload
                     int chooseNumber = chooseX.size();
                     Random random = new Random();
                     int pos = random.nextInt(chooseNumber);
                     int ultimateChoose = chooseX.get(pos); // NOTE! chooseX.get不能少
                     singleChoose[i] = ultimateChoose;
-                    XCostload[ultimateChoose] = XCostload[ultimateChoose].add(chooseCostList.get(pos));
+                    XCostload[ultimateChoose] += chooseCostList.get(pos);
                 } else {
                     if (noDiffChooseIndex >= X) {
                         noDiffChooseIndex = 0;
@@ -269,7 +269,7 @@ public class Unify_new_fast{
                     noDiffChooseIndex++;
 
                     singleChoose[i] = ultimateChoose;
-                    XCostload[ultimateChoose] = XCostload[ultimateChoose].add(chooseCost);
+                    XCostload[ultimateChoose] += chooseCost;
                 }
             }
         }
@@ -280,8 +280,8 @@ public class Unify_new_fast{
             Cost = XCostload[0];
             maxC.add(0);
             for (int i = 1; i < X; i++) {
-                int res = XCostload[i].compareTo(Cost);
-                if (res == 1) {
+                double res = XCostload[i]-Cost;
+                if (res > 0) {
                     maxC.clear();
                     maxC.add(i);
                     Cost = XCostload[i];
@@ -291,13 +291,12 @@ public class Unify_new_fast{
             }
         }
         else { // 同构时为了减小算法中随机均分还是有的不均对结果的干扰，采用求和平均，重要，因为之前代价相等副本随机均分时的不均取max还是有很大影响
-            Cost = new BigDecimal("0");
+            Cost = 0;
             for(int i=0;i<XCostload.length;i++){
-                Cost=Cost.add(XCostload[i]);
+                Cost+=XCostload[i];
             }
-            Cost=Cost.divide(new BigDecimal(X),10, RoundingMode.HALF_UP);
+            Cost /= X;
         }
-
         //打印结果
         System.out.print(String.format("Cost:%.2f s| ",Cost));
         for(int i=0;i<X;i++) {
@@ -380,42 +379,45 @@ public class Unify_new_fast{
             shuffle(xackSeq);
             xackSeqList.add(xackSeq);
         }
-        BigDecimal maxDeltaC = new BigDecimal("0"); // 两两状态间的最大目标值差
+        double maxDeltaC = 0; // 两两状态间的最大目标值差
         for(int i=0;i<setNum-1;i++) {
             for(int j =i+1;j<setNum;j++) {
                 calculate(xackSeqList.get(i));
-                BigDecimal tmp = new BigDecimal(Cost.toString());
+                //BigDecimal tmp = new BigDecimal(Cost.toString());
+                double tmp = Cost;
                 calculate(xackSeqList.get(j));
-                tmp = tmp.subtract(Cost).abs();
-                if(tmp.compareTo(maxDeltaC) == 1) // tmp > maxDeltaB
+//                tmp = tmp.subtract(Cost).abs();
+                tmp = Math.abs(tmp - Cost);
+                if((tmp-maxDeltaC) >0) // tmp > maxDeltaB
                     maxDeltaC = tmp;
             }
         }
         double pr = 0.8;
-        if(maxDeltaC.compareTo(new BigDecimal("0")) == 0) {
-            maxDeltaC = new BigDecimal("0.001");
+        if(maxDeltaC == 0) {
+            maxDeltaC = 0.001;
         }
-        BigDecimal t0 = maxDeltaC.negate().divide(new BigDecimal(Math.log(pr)),10, RoundingMode.HALF_UP);
+//        BigDecimal t0 = -maxDeltaC.divide(new BigDecimal(Math.log(pr)),10, RoundingMode.HALF_UP);
+        double t0 = -maxDeltaC/Math.log(pr);
         System.out.println("初温为："+t0);
 
         //确定初始解
         AckSeq[] currentAckSeq  = new AckSeq[X];
         shuffle(currentAckSeq);
         calculate(currentAckSeq);
-        Cost_best = new BigDecimal(Cost.toString()); // 至于把currentAckSeq加进Set在后面完成的
-        Cost_best_bigloop = new BigDecimal(Cost.toString());
+        Cost_best = Cost; // 至于把currentAckSeq加进Set在后面完成的
+        Cost_best_bigloop = Cost;
 
         int endCriteria = 30;// 终止准则: BEST SO FAR连续20次退温保持不变
         int endCount = 0;
         int sampleCount = 20;// 抽样稳定准则：20步定步长
-        BigDecimal deTemperature = new BigDecimal("0.7"); // 指数退温系数
+        double deTemperature = 0.7; // 指数退温系数
         while(endCount < endCriteria) {
             // 抽样稳定
             // 记忆性：注意中间最优结果记下来
             for(int sampleloop = 0; sampleloop < sampleCount; sampleloop++) {
                 //增加记忆性
-                int comp = Cost.compareTo(Cost_best);
-                if(comp==-1) { //<
+                double comp = Cost-Cost_best;
+                if(comp<0) { //<
                     Cost_best = Cost;
                     ackSeq_best_step.clear();
                     ackSeq_best_step.add(new XAckSeq(currentAckSeq));
@@ -427,17 +429,17 @@ public class Unify_new_fast{
                 //由当前状态产生新状态
                 AckSeq[] nextAckSeq = generateNewStateX(currentAckSeq);
                 //接受函数接受否
-                BigDecimal currentCost = new BigDecimal(Cost.toString()); // 当前状态的状态值保存在Cost
+                double currentCost = Cost; // 当前状态的状态值保存在Cost
                 calculate(nextAckSeq); // Cost会被改变
-                BigDecimal delta = Cost.subtract(currentCost); // 新旧状态的目标函数值差
+                double delta = Cost-currentCost; // 新旧状态的目标函数值差
                 double threshold;
-                if(delta.compareTo(new BigDecimal("0"))!=1) { // <
+                if(delta<=0) { // <
                     threshold = 1;
                     System.out.println("新状态不比现在状态差");
                 }
                 else {
                     //threshold = Math.exp(-delta/t0);
-                    threshold = Math.exp(delta.negate().divide(t0,10, RoundingMode.HALF_UP).doubleValue()); //TODO
+                    threshold = Math.exp(-delta/t0); //TODO
                     System.out.println("新状态比现在状态差");
                 }
 
@@ -453,7 +455,7 @@ public class Unify_new_fast{
                 }
             }
 
-            if(!Cost_best.equals(Cost_best_bigloop)) {
+            if(Cost_best!=Cost_best_bigloop) {
                 endCount = 0; // 重新计数
                 Cost_best_bigloop = Cost_best; // 把当前最小值传递给外圈循环
                 System.out.println("【这次退温BEST SO FAR改变】");
@@ -464,7 +466,7 @@ public class Unify_new_fast{
             }
 
             //退温
-            t0 = t0.multiply(deTemperature);
+            t0 = t0*deTemperature;
         }
         //终止 输出结果
     }
