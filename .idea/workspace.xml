@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f6b4052-c31e-4fbd-9d30-88e349e7dd4d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/SA_process_record.csv" afterPath="$PROJECT_DIR$/SA_process_record.csv" />
-      <change beforePath="$PROJECT_DIR$/src/Man1_1/Test.java" afterPath="$PROJECT_DIR$/src/Man1_1/Test.java" />
-      <change beforePath="$PROJECT_DIR$/src/Man1_1/Test_calculate.java" afterPath="$PROJECT_DIR$/src/Man1_1/Test_calculate.java" />
-      <change beforePath="$PROJECT_DIR$/src/SA/Unify_new_fast.java" afterPath="$PROJECT_DIR$/src/SA/Unify_new_fast.java" />
-      <change beforePath="$PROJECT_DIR$/src/common/Constant.java" afterPath="$PROJECT_DIR$/src/common/Constant.java" />
-      <change beforePath="$PROJECT_DIR$/src/queries/QueryPicture.java" afterPath="$PROJECT_DIR$/src/queries/QueryPicture.java" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/src/queries/QueryPicture.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="212">
-              <caret line="56" column="47" lean-forward="true" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
+              <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -50,7 +45,7 @@
         <entry file="file://$PROJECT_DIR$/src/Man1_1/Test_calculate.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="660">
-              <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+              <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -62,7 +57,7 @@
         <entry file="file://$PROJECT_DIR$/src/SA/Unify_new_fast.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
-              <caret line="512" column="36" lean-forward="true" selection-start-line="512" selection-start-column="36" selection-end-line="512" selection-end-column="36" />
+              <caret line="512" column="36" lean-forward="false" selection-start-line="512" selection-start-column="36" selection-end-line="512" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#calculate_unit#0;class#Unify_new_fast#0" expanded="false" />
@@ -487,9 +482,9 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.5543359" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5543359" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41931942" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41931942" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791666" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -738,7 +733,7 @@
     <entry file="file://$PROJECT_DIR$/src/queries/QueryPicture.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="212">
-          <caret line="56" column="47" lean-forward="true" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
+          <caret line="56" column="47" lean-forward="false" selection-start-line="56" selection-start-column="47" selection-end-line="56" selection-end-column="47" />
           <folding />
         </state>
       </provider>
@@ -746,7 +741,7 @@
     <entry file="file://$PROJECT_DIR$/src/Man1_1/Test_calculate.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
-          <caret line="72" column="0" lean-forward="true" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
+          <caret line="72" column="0" lean-forward="false" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -774,7 +769,7 @@
     <entry file="file://$PROJECT_DIR$/src/SA/Unify_new_fast.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
-          <caret line="512" column="36" lean-forward="true" selection-start-line="512" selection-start-column="36" selection-end-line="512" selection-end-column="36" />
+          <caret line="512" column="36" lean-forward="false" selection-start-line="512" selection-start-column="36" selection-end-line="512" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#calculate_unit#0;class#Unify_new_fast#0" expanded="false" />
