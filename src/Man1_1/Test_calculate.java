@@ -78,25 +78,25 @@ public class Test_calculate{
                     queryPicture,
                     X);
 
-//            unify_new.isDiffReplicated = false;
-//            unify_new.calculate_unit(new AckSeq[]{new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8}),
-//                    new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8}),
-//                    new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8})
-//            });
+            unify_new.isDiffReplicated = false;
+            unify_new.calculate_unit(new AckSeq[]{new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8}),
+                    new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8}),
+                    new AckSeq(new int[]{6,3,7,10,9,4,5,2,1,8})
+            });
 
             //Cost:6.53 s| R1[ck6,ck4,ck5,ck8,ck7,ck1,ck2,ck3,ck9,ck10]:6.53 s,R2[ck2,ck9,ck6,ck8,ck4,ck1,ck10,ck7,ck5,ck3]:6.03 s,R3[ck9,ck3,ck2,ck8,ck6,ck1,ck7,ck4,ck5,ck10]:5.73 s,
 
-            unify_new.isDiffReplicated = true;
-            unify_new.calculate(new AckSeq[]{new AckSeq(new int[]{6,7,8,9,2,5,1,4,3,10}),
-                    new AckSeq(new int[]{6,9,5,7,1,2,4,8,10,3}), // 10,5,6,2,8,3,1,4,7,9
-                    new AckSeq(new int[]{5,4,1,7,10,9,8,6,3,2}) //9,8,3,4,1,7,10,6,5,2
-            });
-            unify_new.pos_1 = new int[]{0,3,2};
-            unify_new.pos_2 = new int[]{0,5,9};
-            unify_new.calculate_remember(new AckSeq[]{new AckSeq(new int[]{6,7,8,9,2,5,1,4,3,10}),
-                    new AckSeq(new int[]{6,9,5,2,7,1,4,8,10,3}), // 10,5,6,2,8,3,1,4,7,9
-                    new AckSeq(new int[]{5,4,2,7,10,9,8,6,3,1}) //9,8,3,4,1,7,10,6,5,2
-            });
+//            unify_new.isDiffReplicated = true;
+//            unify_new.calculate(new AckSeq[]{new AckSeq(new int[]{6,7,8,9,2,5,1,4,3,10}),
+//                    new AckSeq(new int[]{6,9,5,7,1,2,4,8,10,3}), // 10,5,6,2,8,3,1,4,7,9
+//                    new AckSeq(new int[]{5,4,1,7,10,9,8,6,3,2}) //9,8,3,4,1,7,10,6,5,2
+//            });
+//            unify_new.pos_1 = new int[]{0,3,2};
+//            unify_new.pos_2 = new int[]{0,5,9};
+//            unify_new.calculate_remember(new AckSeq[]{new AckSeq(new int[]{6,7,8,9,2,5,1,4,3,10}),
+//                    new AckSeq(new int[]{6,9,5,2,7,1,4,8,10,3}), // 10,5,6,2,8,3,1,4,7,9
+//                    new AckSeq(new int[]{5,4,2,7,10,9,8,6,3,1}) //9,8,3,4,1,7,10,6,5,2
+//            });
 
             /*
             Cost:8.97 s| R1[ck6,ck7,ck8,ck9,ck2,ck5,ck1,ck4,ck3,ck10]:8.97 s,

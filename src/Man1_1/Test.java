@@ -57,8 +57,8 @@ public class Test {
 
         for(int i=0;i<ckn;i++){
             starts[i] = new double[]{0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
-//            lengths[i] = new double[]{0.08,0.2,0.28,0.16,0.12,0.04,0.04,0.04,0.04,0};
-            lengths[i] = new double[]{0,0,0,0,0,0,0,0,0,1};
+            lengths[i] = new double[]{0.08,0.2,0.28,0.16,0.12,0.04,0.04,0.04,0.04,0};
+//            lengths[i] = new double[]{0,0,0,0,0,0,0,0,0,1};
         }
         QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,15);//15*60=900个查询吧。。。
 
@@ -68,7 +68,7 @@ public class Test {
                 Constant.rowSize,Constant.fetchRowCnt,Constant.costModel_k,Constant.costModel_b,Constant.cost_session_around,Constant.cost_request_around,
                 queryPicture,
                 X);
-        unify.isDiffReplicated = true;
+        unify.isDiffReplicated = false;
         unify.combine();
 
 //        unify.calculate_unit(new AckSeq[]{new AckSeq(new int[]{1,2,3}),

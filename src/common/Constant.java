@@ -6,6 +6,7 @@ public class Constant {
 //    public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
     public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
     public static int[] pkey = new int[]{1,1,1};
+    public static String SArecord = "SA_process_record.csv";
 
     // 数据存储参数
     public static int rowSize = 52;

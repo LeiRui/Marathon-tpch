@@ -508,7 +508,7 @@ public class Unify_new_fast{
         PrintWriter pw = null;
         if(isRecordProcess) {
             try {
-                pw = new PrintWriter(new FileOutputStream("SA_process_record.csv"));
+                pw = new PrintWriter(new FileOutputStream(Constant.SArecord));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -517,31 +517,30 @@ public class Unify_new_fast{
 
         //确定初温：
         // 随机产生一组状态，确定两两状态间的最大目标值差，然后依据差值，利用一定的函数确定初温
-//        int setNum = 20;
-//        List<AckSeq[]> xackSeqList = new ArrayList();
-//        for(int i=0; i< setNum; i++) {
-//            AckSeq[] xackSeq = new AckSeq[X];
-//            shuffle(xackSeq);
-//            xackSeqList.add(xackSeq);
-//        }
-//        double maxDeltaC = 0; // 两两状态间的最大目标值差
-//        for(int i=0;i<setNum-1;i++) {
-//            for(int j =i+1;j<setNum;j++) {
-//                calculate(xackSeqList.get(i));
-//                double tmp = Cost;
-//                calculate(xackSeqList.get(j));
-//                tmp = Math.abs(tmp - Cost);
-//                if((tmp-maxDeltaC) >0) // tmp > maxDeltaB
-//                    maxDeltaC = tmp;
-//            }
-//        }
-//        double pr = 0.8;
-//        if(maxDeltaC == 0) {
-//            maxDeltaC = 0.001;
-//        }
-//        double t0 = -maxDeltaC/Math.log(pr);
-//        System.out.println("初温为："+t0);
-        double t0 = 30; //TODO tmp 当数据量改变 这个也要改的！
+        int setNum = 20;
+        List<AckSeq[]> xackSeqList = new ArrayList();
+        for(int i=0; i< setNum; i++) {
+            AckSeq[] xackSeq = new AckSeq[X];
+            shuffle(xackSeq);
+            xackSeqList.add(xackSeq);
+        }
+        double maxDeltaC = 0; // 两两状态间的最大目标值差
+        for(int i=0;i<setNum-1;i++) {
+            for(int j =i+1;j<setNum;j++) {
+                calculate(xackSeqList.get(i));
+                double tmp = Cost;
+                calculate(xackSeqList.get(j));
+                tmp = Math.abs(tmp - Cost);
+                if((tmp-maxDeltaC) >0) // tmp > maxDeltaB
+                    maxDeltaC = tmp;
+            }
+        }
+        double pr = 0.8;
+        if(maxDeltaC == 0) {
+            maxDeltaC = 0.001;
+        }
+        double t0 = -maxDeltaC/Math.log(pr);
+        System.out.println("初温为："+t0);
 
         long elapsed = System.nanoTime();
         //确定初始解
@@ -578,8 +577,9 @@ public class Unify_new_fast{
                 double currentCost = Cost; // 当前状态的状态值保存在Cost，暂时转存备份到currentCost
                 //由当前状态产生新状态
                 AckSeq[] nextAckSeq = generateNewStateX(currentAckSeq);
-                System.out.println(pos_1[0]+"-"+pos_2[0]+" "+pos_1[1]+"-"+pos_2[1]+" "+pos_1[2]+"-"+pos_2[2]);
-                calculate_remember(nextAckSeq); // 增量式 加速一点点 Cost会被改变
+//                System.out.println(pos_1[0]+"-"+pos_2[0]+" "+pos_1[1]+"-"+pos_2[1]+" "+pos_1[2]+"-"+pos_2[2]);
+//                calculate_remember(nextAckSeq); // 增量式 加速一点点 Cost会被改变 bug。。。。。
+                calculate(nextAckSeq); // 增量式 加速一点点 Cost会被改变
                 double delta = Cost-currentCost; // 新旧状态的目标函数值差
                 double threshold;
                 if(delta<=0) {
@@ -800,7 +800,7 @@ public class Unify_new_fast{
 
     //随机交换状态中两个不同位置的ck
     private void generateNewState_swap(int[] ackSeq, int pos1, int pos2){
-        System.out.println("swap");
+//        System.out.println("swap");
         int tmp = ackSeq[pos1];
         ackSeq[pos1] = ackSeq[pos2];
         ackSeq[pos2] = tmp;
@@ -808,7 +808,7 @@ public class Unify_new_fast{
 
     //将两个不同位置间的串逆序
     private void generateNewState_inverse(int[] ackSeq, int pos1, int pos2) {
-        System.out.println("inverse");
+//        System.out.println("inverse");
         //已经保证pos1<pos2
         int[] backup = new int[pos2-pos1+1];
         for(int i=pos1; i<= pos2; i++) {
@@ -824,7 +824,7 @@ public class Unify_new_fast{
         //把pos1位置的ck插入到pos2位置
         //已经保证pos1<pos2
 
-        System.out.println("insert");
+//        System.out.println("insert");
         if(pos2-pos1==1) { // 直接当作swap处理
             int tmp = ackSeq[pos1];
             ackSeq[pos1] = ackSeq[pos2];

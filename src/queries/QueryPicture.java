@@ -53,6 +53,7 @@ public class QueryPicture {
                 // 确定这个batch内第i个ck列的单范围查询的描述参数数值
                 int qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
                 int qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+
                 int[] qck_p_abs = new int[ckn];
                 for (int z = 0; z < ckn; z++) {// 单查询对点查列视为均匀随机取值吧
                     qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
