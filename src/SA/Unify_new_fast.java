@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.*;
 
-public class Unify_new_fast{
+public class Unify_new_fast {
     public int margin_us = 0; // 查询路由采取cost最小原则 模糊限margin 单位us
 
     public boolean isDiffReplicated = false; // 统一无异构优化数据存储结构和异构
@@ -54,10 +54,10 @@ public class Unify_new_fast{
     public int[] pos_1; // 产生新状态的变化范围起点
     public int[] pos_2; // 产生新状态的变化范围起点
 
-    public Unify_new_fast(BigDecimal totalRowNumber, int ckn, List<Column_ian>CKdist,
-                     int rowSize, int fetchRowCnt, double costModel_k, double costModel_b, double cost_session_around, double cost_request_around,
-                     QueryPicture queryPicture,
-                     int X) {
+    public Unify_new_fast(BigDecimal totalRowNumber, int ckn, List<Column_ian> CKdist,
+                          int rowSize, int fetchRowCnt, double costModel_k, double costModel_b, double cost_session_around, double cost_request_around,
+                          QueryPicture queryPicture,
+                          int X) {
         this.totalRowNumber = totalRowNumber;
         this.ckn = ckn;
         this.CKdist = CKdist;
@@ -73,10 +73,10 @@ public class Unify_new_fast{
         rangeQueries = queryPicture.getDefinite(CKdist);
         recordCostBoard = new ArrayList<>();
         qChooseX = new ArrayList<>();
-        for(int i=0;i<ckn;i++){
-            int qckinum = queryPicture.totalQueryBatchNum*queryPicture.qpernum[i];
+        for (int i = 0; i < ckn; i++) {
+            int qckinum = queryPicture.totalQueryBatchNum * queryPicture.qpernum[i];
             double[][] qckiCost = new double[qckinum][];
-            for(int j=0;j<qckinum;j++) {
+            for (int j = 0; j < qckinum; j++) {
                 qckiCost[j] = new double[X]; // X个副本
             }
             recordCostBoard.add(qckiCost);
@@ -208,7 +208,7 @@ public class Unify_new_fast{
 
     /**
      * 关键的状态评价函数 recordCostBoard全盘重新计算
-     *
+     * <p>
      * 输入：一个状态,X个异构副本组成一个状态解
      * 分流策略：最小Cost
      * 状态目标函数值：TotalCost = max(sum Cost)
@@ -218,13 +218,13 @@ public class Unify_new_fast{
      */
     public void calculate(AckSeq[] xackSeq) {
         double[] XCostload = new double[X]; // 用于后面取max(sum HB)
-        for(int i=0;i<X;i++) {
+        for (int i = 0; i < X; i++) {
             XCostload[i] = 0;
         }
-        for(int k=0;k<ckn;k++) { // 遍历一个batch内所有列范围查询 TODO 增量式可以在这里缩小范围
+        for (int k = 0; k < ckn; k++) { // 遍历一个batch内所有列范围查询 TODO 增量式可以在这里缩小范围
             RangeQuery[] singleQueries = rangeQueries.get(k); // qcki下所有查询
             int[] singleChoose = qChooseX.get(k); // qcki下所有查询的最终路由选择记录
-            for(int i=0;i<singleQueries.length;i++) {
+            for (int i = 0; i < singleQueries.length; i++) {
                 RangeQuery q = singleQueries[i];
                 List<Integer> chooseX = new ArrayList(); // 记录中间可选路由结果，代价一样的副本平分负载
                 chooseX.add(0);
@@ -233,15 +233,15 @@ public class Unify_new_fast{
                         xackSeq[0].ackSeq);
                 double chooseCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
                 if (isDiffReplicated) {
-                    recordCostBoard.get(k)[i][0]=chooseCost;
+                    recordCostBoard.get(k)[i][0] = chooseCost;
                     double tmpCost;
                     for (int j = 1; j < X; j++) { // 遍历X个副本，按照最小HB原则对q分流
                         h = new H_ian(totalRowNumber, ckn, CKdist,
                                 q.qckn, q.qck_r1_abs, q.qck_r2_abs, q.r1_closed, q.r2_closed, q.qck_p_abs,
                                 xackSeq[j].ackSeq);
                         tmpCost = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
-                        recordCostBoard.get(k)[i][j]=tmpCost;
-                        double res = tmpCost-chooseCost;
+                        recordCostBoard.get(k)[i][j] = tmpCost;
+                        double res = tmpCost - chooseCost;
                         if (res < 0) {
                             chooseCost = tmpCost; // note 引用
                             chooseX.clear();
@@ -280,18 +280,18 @@ public class Unify_new_fast{
                     noDiffChooseIndex++;
 
                     singleChoose[i] = ultimateChoose;
-                    XCostload[ultimateChoose] += chooseCost;
+                    XCostload[ultimateChoose] += chooseCost; //循环 而不是随机
                 }
             }
         }
 
         // X个结点副本cost load中的最大值
-        if(isDiffReplicated) {// X个结点副本cost load中的最大值
+        if (isDiffReplicated) {// X个结点副本cost load中的最大值
             List<Integer> maxC = new ArrayList<Integer>();
             Cost = XCostload[0];
             maxC.add(0);
             for (int i = 1; i < X; i++) {
-                double res = XCostload[i]-Cost;
+                double res = XCostload[i] - Cost;
                 if (res > 0) {
                     maxC.clear();
                     maxC.add(i);
@@ -300,75 +300,89 @@ public class Unify_new_fast{
                     maxC.add(i);
                 }
             }
-        }
-        else { // 同构时为了减小算法中随机均分还是有的不均对结果的干扰，采用求和平均，重要，因为之前代价相等副本随机均分时的不均取max还是有很大影响
+        } else { // 同构时为了减小算法中随机均分还是有的不均对结果的干扰，采用求和平均，重要，因为之前代价相等副本随机均分时的不均取max还是有很大影响
             Cost = 0;
-            for(int i=0;i<XCostload.length;i++){
-                Cost+=XCostload[i];
+            for (int i = 0; i < XCostload.length; i++) {
+                Cost += XCostload[i];
             }
             Cost /= X;
         }
 
         //打印结果
-        System.out.print(String.format("Cost:%.2f s| ",Cost));
-        for(int i=0;i<X;i++) {
-            System.out.print(String.format("R%d%s:%.2f s,",i+1,xackSeq[i],XCostload[i])); // 用查询执行耗时作为load负载评价
+        System.out.print(String.format("Cost:%.2f s| ", Cost));
+        for (int i = 0; i < X; i++) {
+            System.out.print(String.format("R%d%s:%.2f s,", i + 1, xackSeq[i], XCostload[i])); // 用查询执行耗时作为load负载评价
         }
         System.out.println("");
     }
 
     /**
      * 关键的状态评价函数 利用recordCostBoard实现记忆式更新计算
-     *
+     * Note: 该函数只适合异构副本 因为关于查询路由的方式
      */
-    public void calculate_remember(AckSeq[] xackSeq) {
+    public List<double[][]> calculate_remember(AckSeq[] xackSeq) {
+        // 减少了board每次需要重新计算的单元数量，但是每次需要先对recordCostBoard复制备份一遍，在复制后的上面进行修改，因为这个状态未必会被接受
+        // 如果不接受，就还是原先的recordCostBoard
+        List<double[][]> res = new ArrayList<>();
+        for (int i = 0; i < ckn; i++) {
+            int qckinum = queryPicture.totalQueryBatchNum * queryPicture.qpernum[i];
+            double[][] qckiCost = new double[qckinum][];
+            for (int j = 0; j < qckinum; j++) {
+                qckiCost[j] = new double[X]; // X个副本
+                for (int z = 0; z < X; z++) {
+                    qckiCost[j][z] = recordCostBoard.get(i)[j][z];
+                }
+            }
+            res.add(qckiCost);
+        }
+
         double[] XCostload = new double[X]; // 用于后面取max(sum HB)
-        for(int i=0;i<X;i++) {
+        for (int i = 0; i < X; i++) {
             XCostload[i] = 0;
         }
 
-        for(int i=0;i<X;i++) {
+        for (int i = 0; i < X; i++) {
             int pos1 = pos_1[i];
             int pos2 = pos_2[i];
             AckSeq ackSeq = xackSeq[i];
-            for(int j=0;j<ckn;j++) {
-                if(!ifcontains(ackSeq,pos1,pos2,j+1)) {
+            for (int j = 0; j < ckn; j++) {
+                if (!ifcontains(ackSeq, pos1, pos2, j + 1)) {
                     continue;
                 }
                 // 开始更新
                 RangeQuery[] singleQueries = rangeQueries.get(j); // qckj下所有查询
-                for(int z=0;z<singleQueries.length;z++) {
+                for (int z = 0; z < singleQueries.length; z++) {
                     RangeQuery q = singleQueries[z];
                     H_ian h = new H_ian(totalRowNumber, ckn, CKdist,
                             q.qckn, q.qck_r1_abs, q.qck_r2_abs, q.r1_closed, q.r2_closed, q.qck_p_abs,
                             ackSeq.ackSeq);
                     //更新
-                    recordCostBoard.get(j)[z][i] = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
+                    res.get(j)[z][i] = h.calculate(fetchRowCnt, costModel_k, costModel_b, cost_session_around, cost_request_around);
                 }
             }
         }
-        //recordCostBoard更新完毕，下面根据recordCostBorad重新计算qchooseX和XCostload
-        for(int i=0;i<ckn;i++){
-            double[][] cost = recordCostBoard.get(i);
+        //res更新完毕，下面根据recordCostBorad重新计算qchooseX和XCostload
+        for (int i = 0; i < ckn; i++) {
+            double[][] cost = res.get(i);
             int num = rangeQueries.get(i).length;
-            for(int j=0;j<num;j++){
+            for (int j = 0; j < num; j++) {
                 double[] qcostX = cost[j];
 
                 //选择最小值集合
                 double minqcost = qcostX[0];
                 List<Integer> minchoose = new ArrayList<>();
                 minchoose.add(0);
-                for(int z=1;z<X;z++){
-                    if(qcostX[z] < minqcost) {
+                for (int z = 1; z < X; z++) {
+                    if (qcostX[z] < minqcost) {
                         minqcost = qcostX[z];
                         minchoose.clear();
                         minchoose.add(z);
-                    }
-                    else if(qcostX[z] == minqcost) {
+                    } else if (qcostX[z] == minqcost) {
                         minchoose.add(z);
                     }
                 }
 
+                // 这里只适合异构副本 同构此法随机不能保证绝对均衡性 而不均衡会造成计算代价的不必要增大
                 //从等量代价最小副本中随机选一个路由
                 Random random = new Random();
                 int minNum = minchoose.size();
@@ -380,57 +394,54 @@ public class Unify_new_fast{
 
         // qchooseX和XCostload更新完毕
         // 下面取出XCostload中的最大值作为输入状态的评价值
-        if(isDiffReplicated) {
+        if (isDiffReplicated) {
             List<Integer> maxC = new ArrayList<Integer>();
             Cost = XCostload[0];
             maxC.add(0);
             for (int i = 1; i < X; i++) {
-                double res = XCostload[i]-Cost;
-                if (res > 0) {
+                double delta = XCostload[i] - Cost;
+                if (delta > 0) {
                     maxC.clear();
                     maxC.add(i);
                     Cost = XCostload[i];
-                } else if (res == 0) {
+                } else if (delta == 0) {
                     maxC.add(i);
                 }
             }
-        }
-        else { // 同构时为了减小算法中随机均分还是有的不均对结果的干扰，采用求和平均，重要，因为之前代价相等副本随机均分时的不均取max还是有很大影响
+        } else { // 同构时为了减小算法中随机均分还是有的不均对结果的干扰，采用求和平均，重要，因为之前代价相等副本随机均分时的不均取max还是有很大影响
             Cost = 0;
-            for(int i=0;i<XCostload.length;i++){
-                Cost+=XCostload[i];
+            for (int i = 0; i < XCostload.length; i++) {
+                Cost += XCostload[i];
             }
             Cost /= X;
         }
 
         //打印结果
-        System.out.print(String.format("Cost:%.2f s| ",Cost));
-        for(int i=0;i<X;i++) {
-            System.out.print(String.format("R%d%s:%.2f s,",i+1,xackSeq[i],XCostload[i])); // 用查询执行耗时作为load负载评价
+        System.out.print(String.format("Cost:%.2f s| ", Cost));
+        for (int i = 0; i < X; i++) {
+            System.out.print(String.format("R%d%s:%.2f s,", i + 1, xackSeq[i], XCostload[i])); // 用查询执行耗时作为load负载评价
         }
         System.out.println("");
 
+        return res;
     }
 
     /**
-     *
      * @param ackSeq
      * @param pos1
      * @param pos2
-     * @param qcki 从1开始 ck1 ck2 ... ckn 因为xcakSeq也是从1开始的
+     * @param qcki   从1开始 ck1 ck2 ... ckn 因为xcakSeq也是从1开始的
      * @return
      */
     private boolean ifcontains(AckSeq ackSeq, int pos1, int pos2, int qcki) {
         int[] ackSeq_ = ackSeq.ackSeq;
-        for(int i=pos1; i<=pos2; i++) {
-            if(ackSeq_[i] == qcki) {
+        for (int i = pos1; i <= pos2; i++) {
+            if (ackSeq_[i] == qcki) {
                 return true;
             }
         }
         return false;
     }
-
-
 
 
     /*
@@ -439,46 +450,46 @@ public class Unify_new_fast{
     public void calculate_unit(AckSeq[] xackSeq) {
         calculate(xackSeq);
 
-        pws=new ArrayList<>();
-        for(int i=0;i<X;i++) {
+        pws = new ArrayList<>();
+        for (int i = 0; i < X; i++) {
             try {
-                PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks+"_"+Constant.cf[i]
-                        +"_R" + (i + 1)+ xackSeq[i]+String.format("_%.2f",Cost)+ "_sqls.txt"));
+                PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[i]
+                        + "_R" + (i + 1) + xackSeq[i] + String.format("_%.2f", Cost) + "_sqls.txt"));
                 pws.add(pw_);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
-        for(int k=0;k<ckn;k++) {
+        for (int k = 0; k < ckn; k++) {
             RangeQuery[] singleQueries = rangeQueries.get(k);
             int[] singleChoose = qChooseX.get(k);
-            for(int j=0;j<singleChoose.length;j++) {
+            for (int j = 0; j < singleChoose.length; j++) {
                 int ultimateChoose = singleChoose[j];
-                pws.get(ultimateChoose).println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose],Constant.pkey[ultimateChoose],
-                        CKdist,singleQueries[j]));
+                pws.get(ultimateChoose).println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose], Constant.pkey[ultimateChoose],
+                        CKdist, singleQueries[j]));
             }
         }
 
-        for(PrintWriter pw_: pws) {
+        for (PrintWriter pw_ : pws) {
             pw_.close();
         }
 
-        if(!isDiffReplicated){ // 如果同构 再写一个集合全部查询的大文件
-            PrintWriter pw_=null;
+        if (!isDiffReplicated) { // 如果同构 再写一个集合全部查询的大文件
+            PrintWriter pw_ = null;
             try {
-                pw_ = new PrintWriter(new FileOutputStream(Constant.ks+"_"+Constant.cf[0]
-                        +"_R" + xackSeq[0]+String.format("_%.2f",Cost)+ "_sqlsALL.txt"));
+                pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[0]
+                        + "_R" + xackSeq[0] + String.format("_%.2f", Cost) + "_sqlsALL.txt"));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            for(int k=0;k<ckn;k++) {
+            for (int k = 0; k < ckn; k++) {
                 RangeQuery[] singleQueries = rangeQueries.get(k);
                 int[] singleChoose = qChooseX.get(k);
-                for(int j=0;j<singleChoose.length;j++) {
+                for (int j = 0; j < singleChoose.length; j++) {
                     int ultimateChoose = singleChoose[j];
-                    pw_.println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose],Constant.pkey[ultimateChoose],
-                            CKdist,singleQueries[j]));
+                    pw_.println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose], Constant.pkey[ultimateChoose],
+                            CKdist, singleQueries[j]));
                 }
             }
             pw_.close();
@@ -496,55 +507,54 @@ public class Unify_new_fast{
      * 4. 退温函数
      * 5. 抽样稳定准则
      * 6. 收敛准则
-     *
+     * <p>
      * X个异构副本组成一个状态解
      * 分流策略：简单的代价最小原则
-     *
+     * <p>
      * SA一步式尚未考虑负载均衡代价：找到HR近似最小的一组解
      * 状态目标值为HR
-     *
      */
     public double SA(boolean isRecordProcess) {
         PrintWriter pw = null;
-        if(isRecordProcess) {
+        if (isRecordProcess) {
             try {
                 pw = new PrintWriter(new FileOutputStream(Constant.SArecord));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            pw.write("cost_current,cost_best_sofar,temperature\n");
+            pw.write("cost_current,cost_best_sofar,x_best_sofar,temperature\n");
         }
 
         //确定初温：
         // 随机产生一组状态，确定两两状态间的最大目标值差，然后依据差值，利用一定的函数确定初温
         int setNum = 20;
         List<AckSeq[]> xackSeqList = new ArrayList();
-        for(int i=0; i< setNum; i++) {
+        for (int i = 0; i < setNum; i++) {
             AckSeq[] xackSeq = new AckSeq[X];
             shuffle(xackSeq);
             xackSeqList.add(xackSeq);
         }
         double maxDeltaC = 0; // 两两状态间的最大目标值差
-        for(int i=0;i<setNum-1;i++) {
-            for(int j =i+1;j<setNum;j++) {
+        for (int i = 0; i < setNum - 1; i++) {
+            for (int j = i + 1; j < setNum; j++) {
                 calculate(xackSeqList.get(i));
                 double tmp = Cost;
                 calculate(xackSeqList.get(j));
                 tmp = Math.abs(tmp - Cost);
-                if((tmp-maxDeltaC) >0) // tmp > maxDeltaB
+                if ((tmp - maxDeltaC) > 0) // tmp > maxDeltaB
                     maxDeltaC = tmp;
             }
         }
         double pr = 0.8;
-        if(maxDeltaC == 0) {
+        if (maxDeltaC == 0) {
             maxDeltaC = 0.001;
         }
-        double t0 = -maxDeltaC/Math.log(pr);
-        System.out.println("初温为："+t0);
+        double t0 = -maxDeltaC / Math.log(pr);
+        System.out.println("初温为：" + t0);
 
         long elapsed = System.nanoTime();
         //确定初始解
-        AckSeq[] currentAckSeq  = new AckSeq[X];
+        AckSeq[] currentAckSeq = new AckSeq[X];
         shuffle(currentAckSeq);
         calculate(currentAckSeq);
         Cost_best = Cost; // 至于把currentAckSeq加进Set在后面完成的
@@ -554,70 +564,92 @@ public class Unify_new_fast{
         int endCount = 0;
         int sampleCount = 20;// 抽样稳定准则：20步定步长
         double deTemperature = 0.7; // 指数退温系数
-        while(endCount < endCriteria) {
+        while (endCount < endCriteria) {
             // 抽样稳定
             // 记忆性：注意中间最优结果记下来
-            for(int sampleloop = 0; sampleloop < sampleCount; sampleloop++) {
+            for (int sampleloop = 0; sampleloop < sampleCount; sampleloop++) {
                 //增加记忆性
-                if(isRecordProcess) {
-                    pw.write(Cost+","+Cost_best+","+t0+"\n");
+                if (isRecordProcess) {
+                    pw.write(Cost + "," + Cost_best + ",");
+                    for (XAckSeq xAckSeq : ackSeq_best_step) {
+                        pw.write(xAckSeq + "||");
+                    }
+                    pw.write("," + t0 + "\n");
                 }
 
-                double comp = Cost-Cost_best;
-                if(comp<0) { //<
+                double comp = Cost - Cost_best;
+                if (comp < 0) { //<
                     Cost_best = Cost;
                     ackSeq_best_step.clear();
                     ackSeq_best_step.add(new XAckSeq(currentAckSeq));
                     System.out.println("清空最优集合 更新");
-                }
-                else if(comp==0) {
+                } else if (comp == 0) {
                     ackSeq_best_step.add(new XAckSeq(currentAckSeq));
                 }
+
+//                System.out.println("------------------------");
+//                System.out.println("当前搜索到的best-so-far近似最优解如下：");
+//                for(XAckSeq xAckSeq:ackSeq_best_step) {
+//                    System.out.println(xAckSeq);
+//                }
+//                System.out.println("------------------------");
+
 
                 double currentCost = Cost; // 当前状态的状态值保存在Cost，暂时转存备份到currentCost
                 //由当前状态产生新状态
                 AckSeq[] nextAckSeq = generateNewStateX(currentAckSeq);
-//                System.out.println(pos_1[0]+"-"+pos_2[0]+" "+pos_1[1]+"-"+pos_2[1]+" "+pos_1[2]+"-"+pos_2[2]);
-//                calculate_remember(nextAckSeq); // 增量式 加速一点点 Cost会被改变 bug。。。。。
-                calculate(nextAckSeq); // 增量式 加速一点点 Cost会被改变
-                double delta = Cost-currentCost; // 新旧状态的目标函数值差
-                double threshold;
-                if(delta<=0) {
-                    threshold = 1;
-                    System.out.println("新状态不比现在状态差");
+                //计算新状态目标函数值
+                List candidataRecordCostBoard = null;
+                if (isDiffReplicated) {
+                    // 增量式 加速一点点 Cost会被改变
+                    candidataRecordCostBoard = calculate_remember(nextAckSeq);
+                    //NOTE 这里曾经有一个大的bug：经过calculate_remember增量式计算，本来是直接在原来的recordCostBoard上直接改的，
+                    //但是问题在于这次计算的nextAckSeq未必会被接受，如果没被接受维持原状态，那么这一次的recordCostBoard的更改应该不作数。
                 }
                 else {
-                    //threshold = Math.exp(-delta/t0);
-                    threshold = Math.exp(-delta/t0); //TODO
+                    //就用原来的没加速的
+                    calculate(nextAckSeq);
+                }
+
+                double delta = Cost - currentCost; // 新旧状态的目标函数值差
+                double threshold;
+                if (delta <= 0) {
+                    threshold = 1;
+                    System.out.println("新状态不比现在状态差");
+                } else {
+                    threshold = Math.exp(-delta / t0); //TODO
                     System.out.println("新状态比现在状态差");
                 }
 
-                if(Math.random() <= threshold) { // 概率接受，替换当前状态
+
+                if (Math.random() <= threshold) { // 概率接受，替换当前状态
                     currentAckSeq = nextAckSeq;
                     System.out.println("接受新状态");
-                    // HR就是现在更新后的HR
-                }
-                else {// 否则保持当前状态不变
+                    // Cost就是现在更新后的Cost
+                    if(isDiffReplicated) {
+                        recordCostBoard = candidataRecordCostBoard;
+                    }
+                } else {// 否则保持当前状态不变
                     Cost = currentCost;//恢复原来解的状态值
                     System.out.println("维持当前状态不变");
                     // currentAckSeq就是原本的
+                    // recordCostBoard也就是原本的
                 }
             }
 
-            if(Cost_best!=Cost_best_bigloop) {
+            if (Cost_best != Cost_best_bigloop) {
                 endCount = 0; // 重新计数
                 Cost_best_bigloop = Cost_best; // 把当前最小值传递给外圈循环
                 System.out.println("【这次退温BEST SO FAR改变】");
-            }
-            else { // 这次退温后best_so_far和上次比没有改变
+            } else { // 这次退温后best_so_far和上次比没有改变
                 endCount++;
-                System.out.println(String.format("【这次退温BEST SO FAR连续%d次没有改变】",endCount));
+                System.out.println(String.format("【这次退温BEST SO FAR连续%d次没有改变】", endCount));
             }
             //退温
-            t0 = t0*deTemperature;
+            t0 = t0 * deTemperature;
         }
         //终止 输出结果
-        if(isRecordProcess) {
+        if (isRecordProcess) {
             pw.close();
         }
         elapsed = System.nanoTime() - elapsed;
@@ -629,8 +661,8 @@ public class Unify_new_fast{
     public double combine() {
         System.out.println("----------------------------------------------------");
         // 第一步： SA找到Cost代价近似最小的一组解
-        double time = SA(true);
-        System.out.println("耗时 "+time+" ms"); // NOTE: 这部分时间里包括了pw保存sqls写文件的时间
+        double time = SA(Constant.isRecordProcess);
+        System.out.println("耗时 " + time + " ms"); // NOTE: 这部分时间里包括了pw保存sqls写文件的时间
         System.out.println("step完成: SA找到Cost近似最小的" + ackSeq_best_step.size() + "个近似最优解:");
         System.out.println("选择最后一个解作为输出");
         Iterator iterator = ackSeq_best_step.iterator();
@@ -643,43 +675,43 @@ public class Unify_new_fast{
 
         //记录最后一个最优解的查询路由
         pws = new ArrayList<>();
-        for(int i=0;i<X;i++) {
+        for (int i = 0; i < X; i++) {
             try {
-                PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks+"_"+Constant.cf[i]
-                        +"_R" + (i + 1)+ xackSeq.xackSeq[i]+String.format("_%.2f",Cost)+ "_sqls.txt"));
+                PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[i]
+                        + "_R" + (i + 1) + xackSeq.xackSeq[i] + String.format("_%.2f", Cost) + "_sqls.txt"));
                 pws.add(pw_);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
-        for(int k=0;k<ckn;k++) {
+        for (int k = 0; k < ckn; k++) {
             RangeQuery[] singleQueries = rangeQueries.get(k);
             int[] singleChoose = qChooseX.get(k);
-            for(int j=0;j<singleChoose.length;j++) {
+            for (int j = 0; j < singleChoose.length; j++) {
                 int ultimateChoose = singleChoose[j];
-                pws.get(ultimateChoose).println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose],Constant.pkey[ultimateChoose],
-                        CKdist,singleQueries[j]));
+                pws.get(ultimateChoose).println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose], Constant.pkey[ultimateChoose],
+                        CKdist, singleQueries[j]));
             }
         }
-        for(PrintWriter pw_: pws) {
+        for (PrintWriter pw_ : pws) {
             pw_.close();
         }
 
-        if(!isDiffReplicated){ // 如果同构 再写一个集合全部查询的大文件
-            PrintWriter pw_=null;
+        if (!isDiffReplicated) { // 如果同构 再写一个集合全部查询的大文件
+            PrintWriter pw_ = null;
             try {
-                pw_ = new PrintWriter(new FileOutputStream(Constant.ks+"_"+Constant.cf[0]
-                        +"_R" + xackSeq.xackSeq[0]+String.format("_%.2f",Cost)+ "_sqlsALL.txt"));
+                pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[0]
+                        + "_R" + xackSeq.xackSeq[0] + String.format("_%.2f", Cost) + "_sqlsALL.txt"));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            for(int k=0;k<ckn;k++) {
+            for (int k = 0; k < ckn; k++) {
                 RangeQuery[] singleQueries = rangeQueries.get(k);
                 int[] singleChoose = qChooseX.get(k);
-                for(int j=0;j<singleChoose.length;j++) {
-                    pw_.println(queryPicture.getSql(Constant.ks, Constant.cf[0],Constant.pkey[0],
-                            CKdist,singleQueries[j]));
+                for (int j = 0; j < singleChoose.length; j++) {
+                    pw_.println(queryPicture.getSql(Constant.ks, Constant.cf[0], Constant.pkey[0],
+                            CKdist, singleQueries[j]));
                 }
             }
             pw_.close();
@@ -688,7 +720,7 @@ public class Unify_new_fast{
     }
 
     private void shuffle(AckSeq[] xackSeq) {
-        if(isDiffReplicated) {// 副本异构
+        if (isDiffReplicated) {// 副本异构
             for (int j = 0; j < X; j++) {
                 List<Integer> ackList = new ArrayList();
                 xackSeq[j] = new AckSeq(new int[ckn]);
@@ -700,8 +732,7 @@ public class Unify_new_fast{
                     xackSeq[j].ackSeq[i] = ackList.get(i);
                 }
             }
-        }
-        else { // 无异构
+        } else { // 无异构
             List<Integer> ackList = new ArrayList();
             for (int i = 1; i <= ckn; i++) { // 这里必须从1开始，因为表示ck排序输入参数从1开始
                 ackList.add(i);
@@ -719,40 +750,42 @@ public class Unify_new_fast{
 
     private AckSeq[] generateNewStateX(AckSeq[] xackSeq) {
         AckSeq[] nextXAckSeq = new AckSeq[X];
-        if(isDiffReplicated) { // 副本异构
+        if (isDiffReplicated) { // 副本异构
             for (int i = 0; i < X; i++) {
                 Random random = new Random();
                 int pos1 = random.nextInt(ckn); // 0~ckn-1
                 int pos2 = random.nextInt(ckn);
-                while(true) {
-                    if(pos2!=pos1)
+                while (true) {
+                    if (pos2 != pos1)
                         break;
                     else {
                         pos2 = random.nextInt(ckn);
                     }
                 }
-                if(pos1<pos2) {
+                if (pos1 < pos2) {
                     pos_1[i] = pos1;
                     pos_2[i] = pos2;
                 } else {
                     pos_1[i] = pos2;
                     pos_2[i] = pos1;
                 }
+//                System.out.print("pos1-2:"+pos_1[i]+"-"+pos_2[i]+"  ");
+//                System.out.println("current:"+xackSeq[i]);
                 nextXAckSeq[i] = new AckSeq(generateNewState(xackSeq[i].ackSeq, pos_1[i], pos_2[i]));
+//                System.out.println("next:"+nextXAckSeq[i]);
             }
-        }
-        else { // 无异构
+        } else { // 无异构
             Random random = new Random();
             int pos1 = random.nextInt(ckn); // 0~ckn-1
             int pos2 = random.nextInt(ckn);
-            while(true) {
-                if(pos2!=pos1)
+            while (true) {
+                if (pos2 != pos1)
                     break;
                 else {
                     pos2 = random.nextInt(ckn);
                 }
             }
-            if(pos1>pos2){
+            if (pos1 > pos2) {
                 int tmp = pos1;
                 pos1 = pos2;
                 pos2 = tmp;
@@ -761,7 +794,7 @@ public class Unify_new_fast{
                 pos_1[i] = pos1;
                 pos_2[i] = pos2;
             }
-            int[] tmp = generateNewState(xackSeq[0].ackSeq,pos_1[0],pos_2[0]);
+            int[] tmp = generateNewState(xackSeq[0].ackSeq, pos_1[0], pos_2[0]);
             for (int i = 0; i < X; i++) {
                 nextXAckSeq[i] = new AckSeq(tmp);
             }
@@ -775,9 +808,9 @@ public class Unify_new_fast{
      *
      * @param ackSeq
      */
-    private int[] generateNewState(int[] ackSeq,int pos1, int pos2) {
-        int [] nextAckSeq = new int[ckn];
-        for(int i=0;i<ckn;i++) {
+    private int[] generateNewState(int[] ackSeq, int pos1, int pos2) {
+        int[] nextAckSeq = new int[ckn];
+        for (int i = 0; i < ckn; i++) {
             nextAckSeq[i] = ackSeq[i];
         }
 
@@ -786,20 +819,18 @@ public class Unify_new_fast{
         double p_insert = 1; // [0.6,1)
 
         double r = Math.random();
-        if(r<p_swap) {
-            generateNewState_swap(nextAckSeq,pos1,pos2);
+        if (r < p_swap) {
+            generateNewState_swap(nextAckSeq, pos1, pos2);
+        } else if (r < p_inverse) {
+            generateNewState_inverse(nextAckSeq, pos1, pos2);
+        } else {
+            generateNewState_insert(nextAckSeq, pos1, pos2);
         }
-        else if(r<p_inverse) {
-            generateNewState_inverse(nextAckSeq,pos1,pos2);
-        }
-        else {
-            generateNewState_insert(nextAckSeq,pos1,pos2);
-        }
-        return  nextAckSeq;
+        return nextAckSeq;
     }
 
     //随机交换状态中两个不同位置的ck
-    private void generateNewState_swap(int[] ackSeq, int pos1, int pos2){
+    private void generateNewState_swap(int[] ackSeq, int pos1, int pos2) {
 //        System.out.println("swap");
         int tmp = ackSeq[pos1];
         ackSeq[pos1] = ackSeq[pos2];
@@ -810,45 +841,51 @@ public class Unify_new_fast{
     private void generateNewState_inverse(int[] ackSeq, int pos1, int pos2) {
 //        System.out.println("inverse");
         //已经保证pos1<pos2
-        int[] backup = new int[pos2-pos1+1];
-        for(int i=pos1; i<= pos2; i++) {
-            backup[i-pos1] = ackSeq[i];
+        int[] backup = new int[pos2 - pos1 + 1];
+        for (int i = pos1; i <= pos2; i++) {
+            backup[i - pos1] = ackSeq[i];
         }
-        for(int i=pos1; i<=pos2; i++) {
-            ackSeq[i] = backup[pos2-i];
+        for (int i = pos1; i <= pos2; i++) {
+            ackSeq[i] = backup[pos2 - i];
         }
     }
 
     //随机选择某一位置的ck并插入到另一随机位置
-    private void generateNewState_insert(int[] ackSeq, int pos1, int pos2) {
+    public void generateNewState_insert(int[] ackSeq, int pos1, int pos2) {
         //把pos1位置的ck插入到pos2位置
         //已经保证pos1<pos2
-
 //        System.out.println("insert");
-        if(pos2-pos1==1) { // 直接当作swap处理
+//        for(int i=0;i<ackSeq.length;i++) {
+//            System.out.print(ackSeq[i]+",");
+//        }
+//        System.out.println("");
+
+        if (pos2 - pos1 == 1) { // 直接当作swap处理
             int tmp = ackSeq[pos1];
             ackSeq[pos1] = ackSeq[pos2];
             ackSeq[pos2] = tmp;
             return;
         }
         int[] tmp = new int[ckn];
-        for(int i=0;i<ckn;i++) {
+        for (int i = 0; i < ckn; i++) {
             tmp[i] = ackSeq[i];
         }
-        for(int i =0; i<ckn;i++) {
-            if(i<pos1) {
+        for (int i = 0; i < ckn; i++) {
+            if (i < pos1) {
                 ackSeq[i] = tmp[i];
-            }
-            else if(i<pos2) {
-                ackSeq[i] = tmp[i+1];
-            }
-            else if(i==pos2) {
+            } else if (i < pos2) {
+                ackSeq[i] = tmp[i + 1];
+            } else if (i == pos2) {
                 ackSeq[i] = tmp[pos1];
-            }
-            else {
+            } else {
                 ackSeq[i] = tmp[i];
             }
         }
+//        for(int i=0;i<ackSeq.length;i++) {
+//            System.out.print(ackSeq[i]+",");
+//        }
+//        System.out.println("");
+
     }
 }
 

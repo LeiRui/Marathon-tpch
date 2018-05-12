@@ -1,4 +1,4 @@
-package Man1_1;
+package exp621;
 
 import HModel.Column_ian;
 import SA.Unify_new_fast;
@@ -15,7 +15,7 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) {
         // 数据分布参数
-        BigDecimal totalRowNumber = new BigDecimal("40000000");
+        BigDecimal totalRowNumber = new BigDecimal(Constant.dataNum);
 
         List<Column_ian> CKdist = new ArrayList<Column_ian>();
         double step = 1;
@@ -58,9 +58,8 @@ public class Test {
         for(int i=0;i<ckn;i++){
             starts[i] = new double[]{0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1};
             lengths[i] = new double[]{0.08,0.2,0.28,0.16,0.12,0.04,0.04,0.04,0.04,0};
-//            lengths[i] = new double[]{0,0,0,0,0,0,0,0,0,1};
         }
-        QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,15);//15*60=900个查询吧。。。
+        QueryPicture queryPicture = new QueryPicture(starts,lengths,qpernum,15);//15*60=900个查询
 
         int X = 3;
         Unify_new_fast unify = new Unify_new_fast(totalRowNumber,
@@ -68,11 +67,7 @@ public class Test {
                 Constant.rowSize,Constant.fetchRowCnt,Constant.costModel_k,Constant.costModel_b,Constant.cost_session_around,Constant.cost_request_around,
                 queryPicture,
                 X);
-        unify.isDiffReplicated = false;
+        unify.isDiffReplicated = Constant.isDiffReplica;
         unify.combine();
-
-//        unify.calculate_unit(new AckSeq[]{new AckSeq(new int[]{1,2,3}),
-//                new AckSeq(new int[]{1,2,3}),
-//                new AckSeq(new int[]{1,2,3})});
     }
 }

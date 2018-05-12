@@ -1,12 +1,17 @@
 package common;
 
 public class Constant {
-//    public static String ks = "reliant_1000million";
-    public static String ks = "test";
+    public static String dataNum = "1000000000";
+    public static boolean isDiffReplica   =  true; // TODO 记得改这个！！！
+//    public static String ks = "Wilson_diff_1b";
+    public static String ks = "pearson_xxx";
+//    public static String[] cf = new String[]{"defaulttable","defaulttable","defaulttable"};
 //    public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
-    public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
-    public static int[] pkey = new int[]{1,1,1};
+    public static String[] cf = new String[]{"df1","df2","df3"};
+    public static int[] pkey = new int[]{3,4,13};
     public static String SArecord = "SA_process_record.csv";
+
+    public static boolean isRecordProcess = true;
 
     // 数据存储参数
     public static int rowSize = 52;
