@@ -1,9 +1,11 @@
 package queries;
 
 import HModel.Column_ian;
+import common.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /*
  查询集的描述参数类
@@ -51,18 +53,42 @@ public class QueryPicture {
             int singleSum = res_.length;
             for (int j = 0; j < singleSum; j++) {
                 // 确定这个batch内第i个ck列的单范围查询的描述参数数值
-                int qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
-                int qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+                double qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+                double qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
+//                System.out.println("r1="+qck_r1_abs+" r2="+qck_r2_abs);
 
-                int[] qck_p_abs = new int[ckn];
+                //TODO 记得改！
+//                double qck_r1_abs = 1;
+//                double qck_r2_abs = 5.5;
+
+//                int qck_r2_abs = 3163;
+//                int qck_r2_abs = 216;
+//                int qck_r2_abs = 57;
+//                int qck_r2_abs = 26;
+//                int qck_r2_abs = 16;
+//                int qck_r2_abs = 11;
+//                int qck_r2_abs = 9;
+
+                // NOTE 这里有可能qck_r1_abs~qck_r2_abs超出范围
+
+
+                double[] qck_p_abs = new double[ckn];
                 for (int z = 0; z < ckn; z++) {// 单查询对点查列视为均匀随机取值吧
-                    qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
-                    if(qck_p_abs[z] >= CKdist.get(z).xmax_) {
-                        qck_p_abs[z] = (int)CKdist.get(z).xmax_-1;
+//                    qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
+//                    if(qck_p_abs[z] >= CKdist.get(z).xmax_) {
+//                        qck_p_abs[z] = (int)CKdist.get(z).xmax_-1;
+//                    }
+//                    else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
+//                        qck_p_abs[z] = (int)CKdist.get(z).xmin_;
+//                    }
+                    // TODO 修改点查询的点值生成方式，尽量保证点差值有意义
+                    Random random = new Random();
+                    int totalStep = (int)((CKdist.get(z).xmax_ - CKdist.get(z).xmin_)/CKdist.get(z).step_);
+                    int posStep = random.nextInt(totalStep);
+                    if(posStep==0) {
+                        posStep = 1;
                     }
-                    else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
-                        qck_p_abs[z] = (int)CKdist.get(z).xmin_;
-                    }
+                    qck_p_abs[z] = CKdist.get(z).xmin_+posStep*CKdist.get(z).step_;
                     // TODO round是为了sql时int点查安全起见 否则直接检查不存在返回了
                 }
                 res_[j] = new RangeQuery(i+1, qck_r1_abs, qck_r2_abs, true, true, qck_p_abs);
@@ -75,17 +101,33 @@ public class QueryPicture {
         int ckn = CKdist.size();
         for(int k=0;k<ckn;k++) {
             if(k==q.qckn-1) { // qckn从1开始
-                String tmp = " and ck%d>=%d and ck%d<=%d";
-                q_format+=String.format(tmp, k+1,q.qck_r1_abs,k+1,q.qck_r2_abs);
+//                String tmp = " and ck%d>=%d and ck%d<=%d";
+//                q_format+=String.format(tmp, k+1,q.qck_r1_abs,k+1,q.qck_r2_abs);
+                if(Constant.isInt[k]) {// int
+                    String tmp = " and %s>=%d and %s<=%d";
+                    q_format+=String.format(tmp, Constant.ckname[k],(int)q.qck_r1_abs,Constant.ckname[k],(int)q.qck_r2_abs);
+                }
+                else {
+                    String tmp = " and %s>=%.2f and %s<=%.2f";
+                    q_format+=String.format(tmp, Constant.ckname[k],q.qck_r1_abs,Constant.ckname[k],q.qck_r2_abs);
+                }
             }
             else {
-                q_format+=" and ck"+(k+1)+"="+(int)q.qck_p_abs[k];
+//                q_format+=" and ck"+(k+1)+"="+(int)q.qck_p_abs[k];
+                if(Constant.isInt[k]) {
+                    q_format += " and " + Constant.ckname[k] + "=" + (int) q.qck_p_abs[k];
+                }
+                else {
+                    String tmp = " and %s=%.2f";
+                    q_format+=String.format(tmp,Constant.ckname[k],q.qck_p_abs[k]);
+                }
             }
         }
         q_format+=" allow filtering;";
         return q_format;
     }
 
+    @Deprecated
     public RangeQuery[][] getSqls(String ks, String cf, int pkey, List<Column_ian> CKdist, List<String>sqls) {
         RangeQuery[][] res = new RangeQuery[totalQueryBatchNum][ckn]; //TODO 一个batch内查询参数就先用同一个重复若干次吧
         for (int i = 0; i < totalQueryBatchNum; i++) {
@@ -99,16 +141,23 @@ public class QueryPicture {
                 // 确定这个batch内第i个ck列的单范围查询的描述参数数值
                 int qck_r1_abs = (int)Math.round(getFromDist(dist_start) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
                 int qck_r2_abs = (int)Math.round(qck_r1_abs + getFromDist(dist_length) * (columnIan.xmax_ - columnIan.xmin_) + columnIan.xmin_);
-                int[] qck_p_abs = new int[ckn];
+                double[] qck_p_abs = new double[ckn];
                 for (int z = 0; z < ckn; z++) {// 单查询对点查列视为均匀随机取值吧
-                    qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
-                    // TODO round是为了sql时int点查安全起见 否则直接检查不存在返回了
-                    if(qck_p_abs[z] >= CKdist.get(z).xmax_) {
-                        qck_p_abs[z] = (int)CKdist.get(z).xmax_-1;
+//                    qck_p_abs[z] = (int)Math.round(Math.random() * (CKdist.get(z).xmax_ - CKdist.get(z).xmin_) + CKdist.get(z).xmin_);
+//                    // TODO round是为了sql时int点查安全起见 否则直接检查不存在返回了
+//                    if(qck_p_abs[z] >= CKdist.get(z).xmax_) {
+//                        qck_p_abs[z] = (int)CKdist.get(z).xmax_-1;
+//                    }
+//                    else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
+//                        qck_p_abs[z] = (int)CKdist.get(z).xmin_;
+//                    }
+                    Random random = new Random();
+                    int totalStep = (int)((CKdist.get(z).xmax_ - CKdist.get(z).xmin_)/CKdist.get(z).step_);
+                    int posStep = random.nextInt(totalStep);
+                    if(posStep==0) {
+                        posStep = 1;
                     }
-                    else if(qck_p_abs[z]<CKdist.get(z).xmin_) {
-                        qck_p_abs[z] = (int)CKdist.get(z).xmin_;
-                    }
+                    qck_p_abs[z] = CKdist.get(z).xmin_+posStep*CKdist.get(z).step_;
                 }
                 res[j][i] = new RangeQuery(i, qck_r1_abs, qck_r2_abs, true, true, qck_p_abs);
                 String q_format = "select * from "+ks+"."+cf+" where pkey="+pkey;

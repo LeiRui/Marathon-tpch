@@ -252,26 +252,12 @@ public class Unify_new_fast {
                     }//X个副本遍历结束，现在已经确定了这个query按照精确最小Cost原则分流到的副本chooseX，以及这个最小Cost等于多少
                     //即已确定recordCostBoard.get(k)[i]的所有X个cost值
 
-//                    List<Double> chooseCostList = new ArrayList<Double>();
-//                    for (int c = 0; c < chooseX.size(); c++) {
-//                        chooseCostList.add(chooseCost);
-//                    }
-//                    for (int j = 0; j < X; j++) { //重新遍历一遍，对分流模糊一层
-//                        if (chooseX.contains(j)) {
-//                            continue;
-//                        }
-//                        if (recordCost[j]-chooseCost-margin_us < 0) {
-//                            chooseX.add(j);
-//                            chooseCostList.add(recordCost[j]);
-//                        }
-//                    }
-//                    // 得到扩展版的chooseX&chooseCostList, 接下来更新XCostload
-
                     int chooseNumber = chooseX.size(); // 在代价相同最小的里面随机选
                     Random random = new Random();
                     int ultimateChoose = chooseX.get(random.nextInt(chooseNumber)); // chooseX.get不能少
                     singleChoose[i] = ultimateChoose;
                     XCostload[ultimateChoose] += recordCostBoard.get(k)[i][ultimateChoose];
+
                 } else {
                     if (noDiffChooseIndex >= X) {
                         noDiffChooseIndex = 0;
@@ -309,11 +295,13 @@ public class Unify_new_fast {
         }
 
         //打印结果
-        System.out.print(String.format("Cost:%.2f s| ", Cost));
-        for (int i = 0; i < X; i++) {
-            System.out.print(String.format("R%d%s:%.2f s,", i + 1, xackSeq[i], XCostload[i])); // 用查询执行耗时作为load负载评价
+        if(Constant.isPrint) {
+            System.out.print(String.format("Cost:%.2f s| ", Cost));
+            for (int i = 0; i < X; i++) {
+                System.out.print(String.format("R%d%s:%.2f s,", i + 1, xackSeq[i], XCostload[i])); // 用查询执行耗时作为load负载评价
+            }
+            System.out.println("");
         }
-        System.out.println("");
     }
 
     /**
@@ -417,11 +405,13 @@ public class Unify_new_fast {
         }
 
         //打印结果
-        System.out.print(String.format("Cost:%.2f s| ", Cost));
-        for (int i = 0; i < X; i++) {
-            System.out.print(String.format("R%d%s:%.2f s,", i + 1, xackSeq[i], XCostload[i])); // 用查询执行耗时作为load负载评价
+        if(Constant.isPrint) {
+            System.out.print(String.format("Cost:%.2f s| ", Cost));
+            for (int i = 0; i < X; i++) {
+                System.out.print(String.format("R%d%s:%.2f s,", i + 1, xackSeq[i], XCostload[i])); // 用查询执行耗时作为load负载评价
+            }
+            System.out.println("");
         }
-        System.out.println("");
 
         return res;
     }
@@ -550,7 +540,9 @@ public class Unify_new_fast {
             maxDeltaC = 0.001;
         }
         double t0 = -maxDeltaC / Math.log(pr);
-        System.out.println("初温为：" + t0);
+        if(Constant.isPrint) {
+            System.out.println("初温为：" + t0);
+        }
 
         long elapsed = System.nanoTime();
         //确定初始解
@@ -582,7 +574,7 @@ public class Unify_new_fast {
                     Cost_best = Cost;
                     ackSeq_best_step.clear();
                     ackSeq_best_step.add(new XAckSeq(currentAckSeq));
-                    System.out.println("清空最优集合 更新");
+//                    System.out.println("清空最优集合 更新");
                 } else if (comp == 0) {
                     ackSeq_best_step.add(new XAckSeq(currentAckSeq));
                 }
@@ -600,7 +592,7 @@ public class Unify_new_fast {
                 AckSeq[] nextAckSeq = generateNewStateX(currentAckSeq);
                 //计算新状态目标函数值
                 List candidataRecordCostBoard = null;
-                if (isDiffReplicated) {
+                if (isDiffReplicated && Constant.isAccelerate) {
                     // 增量式 加速一点点 Cost会被改变
                     candidataRecordCostBoard = calculate_remember(nextAckSeq);
                     //NOTE 这里曾经有一个大的bug：经过calculate_remember增量式计算，本来是直接在原来的recordCostBoard上直接改的，
@@ -615,23 +607,31 @@ public class Unify_new_fast {
                 double threshold;
                 if (delta <= 0) {
                     threshold = 1;
-                    System.out.println("新状态不比现在状态差");
+                    if(Constant.isPrint) {
+                        System.out.println("新状态不比现在状态差");
+                    }
                 } else {
                     threshold = Math.exp(-delta / t0); //TODO
-                    System.out.println("新状态比现在状态差");
+                    if(Constant.isPrint) {
+                        System.out.println("新状态比现在状态差");
+                    }
                 }
 
 
                 if (Math.random() <= threshold) { // 概率接受，替换当前状态
                     currentAckSeq = nextAckSeq;
-                    System.out.println("接受新状态");
+                    if(Constant.isPrint) {
+                        System.out.println("接受新状态");
+                    }
                     // Cost就是现在更新后的Cost
-                    if(isDiffReplicated) {
+                    if(isDiffReplicated&&Constant.isAccelerate) {
                         recordCostBoard = candidataRecordCostBoard;
                     }
                 } else {// 否则保持当前状态不变
                     Cost = currentCost;//恢复原来解的状态值
-                    System.out.println("维持当前状态不变");
+                    if(Constant.isPrint) {
+                        System.out.println("维持当前状态不变");
+                    }
                     // currentAckSeq就是原本的
                     // recordCostBoard也就是原本的
                 }
@@ -640,20 +640,26 @@ public class Unify_new_fast {
             if (Cost_best != Cost_best_bigloop) {
                 endCount = 0; // 重新计数
                 Cost_best_bigloop = Cost_best; // 把当前最小值传递给外圈循环
-                System.out.println("【这次退温BEST SO FAR改变】");
+                if(Constant.isPrint) {
+                    System.out.println("【这次退温BEST SO FAR改变】");
+                }
             } else { // 这次退温后best_so_far和上次比没有改变
                 endCount++;
-                System.out.println(String.format("【这次退温BEST SO FAR连续%d次没有改变】", endCount));
+                if(Constant.isPrint) {
+                    System.out.println(String.format("【这次退温BEST SO FAR连续%d次没有改变】", endCount));
+                }
             }
             //退温
             t0 = t0 * deTemperature;
         }
+        elapsed = System.nanoTime() - elapsed;
+        double time = elapsed / (double) Math.pow(10, 6); // unit: ms
+
         //终止 输出结果
         if (isRecordProcess) {
             pw.close();
         }
-        elapsed = System.nanoTime() - elapsed;
-        double time = elapsed / (double) Math.pow(10, 6); // unit: ms
+
         return time;
     }
 
@@ -674,28 +680,31 @@ public class Unify_new_fast {
         System.out.println(String.format("目标值Cost近似最小为：%.2f (s)", Cost));
 
         //记录最后一个最优解的查询路由
-        pws = new ArrayList<>();
-        for (int i = 0; i < X; i++) {
-            try {
-                PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[i]
-                        + "_R" + (i + 1) + xackSeq.xackSeq[i] + String.format("_%.2f", Cost) + "_sqls.txt"));
-                pws.add(pw_);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
+        if(Constant.isGetSqls) { //TODO
+            pws = new ArrayList<>();
+            for (int i = 0; i < X; i++) {
+                try {
+//                    PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[i]
+//                            + "_R" + (i + 1) + xackSeq.xackSeq[i] + String.format("_%.2f", Cost) + "_sqls.txt"));
+                    PrintWriter pw_ = new PrintWriter(new FileOutputStream(Constant.ks + "_" + Constant.cf[i]
+                            + "_R" + (i + 1) + String.format("_%.2f", Cost) + "_sqls.txt"));
+                    pws.add(pw_);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-        }
-
-        for (int k = 0; k < ckn; k++) {
-            RangeQuery[] singleQueries = rangeQueries.get(k);
-            int[] singleChoose = qChooseX.get(k);
-            for (int j = 0; j < singleChoose.length; j++) {
-                int ultimateChoose = singleChoose[j];
-                pws.get(ultimateChoose).println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose], Constant.pkey[ultimateChoose],
-                        CKdist, singleQueries[j]));
+            for (int k = 0; k < ckn; k++) {
+                RangeQuery[] singleQueries = rangeQueries.get(k);
+                int[] singleChoose = qChooseX.get(k);
+                for (int j = 0; j < singleChoose.length; j++) {
+                    int ultimateChoose = singleChoose[j];
+                    pws.get(ultimateChoose).println(queryPicture.getSql(Constant.ks, Constant.cf[ultimateChoose], Constant.pkey[ultimateChoose],
+                            CKdist, singleQueries[j]));
+                }
             }
-        }
-        for (PrintWriter pw_ : pws) {
-            pw_.close();
+            for (PrintWriter pw_ : pws) {
+                pw_.close();
+            }
         }
 
         if (!isDiffReplicated) { // 如果同构 再写一个集合全部查询的大文件

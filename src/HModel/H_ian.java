@@ -67,9 +67,9 @@ public class H_ian {
 
     public H_ian(BigDecimal totalRowNumber, int ckn, List<Column_ian> CKdist,
                  int qckn,
-                 int qck_r1_abs, int qck_r2_abs,
+                 double qck_r1_abs, double qck_r2_abs,
                  boolean r1_closed, boolean r2_closed,
-                 int[] qck_p_abs,
+                 double[] qck_p_abs,
                  int[] ackSeq){
         this.ackSeq = ackSeq;
         this.totalRowNumber = totalRowNumber;

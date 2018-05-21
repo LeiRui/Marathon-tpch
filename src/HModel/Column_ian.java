@@ -49,17 +49,62 @@ public class Column_ian {
     }
 
     public double getBetween(double r1, double r2, rangeType type) {
-        double res = 0;
+//        double res = 0;
+//
+//        for(int i = 0; i < x_.size()-1; i++) {
+//            int number = (int)Math.round((x_.get(i+1)-x_.get(i))/step_);
+//            double pos = x_.get(i);
+//            while(pos < x_.get(i+1)) {
+//                if(isIn(pos, r1, r2, type)) {
+//                    res += (double)(y_.get(i))/(sum_*number);
+//                }
+//                pos += step_;
+//            }
+//        }
+//        return res;
 
-        for(int i = 0; i < x_.size()-1; i++) {
-            int number = (int)Math.round((x_.get(i+1)-x_.get(i))/step_);
-            double pos = x_.get(i);
-            while(pos < x_.get(i+1)) {
-                if(isIn(pos, r1, r2, type)) {
-                    res += (double)(y_.get(i))/(sum_*number);
+        double res = 0;
+        //先找出[r1,r2]覆盖的范围段的左右两端
+        int x1=0,x2=0;
+        boolean isx1=false;
+        int i = 0;
+        for (; i < x_.size()-1; i++) {
+            if(isIn(x_.get(i),r1,r2,type)) {
+                if(!isx1) { // 第一个落到的
+                    x1=i;
+                    isx1=true;
                 }
-                pos += step_;
+                res+=(double)(y_.get(i))/sum_;
             }
+            else if(isx1) { // 已经开始落到，所以这是末尾out
+                x2=i;
+                break;
+            }
+        }
+        if(i==x_.size()-1) {
+            if(!isIn(x_.get(i),r1,r2,type)){
+                x2=i;
+            }
+        }
+        //添加r1到x1之间的
+        if(x1>0) {
+//            double tmp = (double)(y_.get(x1-1))/sum_*(double)(r1-x_.get(x1))/(x_.get(x1)-x_.get(x1-1));
+            int n = (int)Math.floor((r1-x_.get(x1))/step_);
+            int number = (int)Math.round((x_.get(x1)-x_.get(x1-1))/step_);
+            double tmp = (double)(y_.get(x1-1))/(sum_*number)*n;
+            res+=tmp;
+        }
+        //减去x2到r2之间的
+        if(x2>0) {
+//            double tmp = (double)(y_.get(x2-1))/sum_*(double)(x_.get(x2)-r2)/(x_.get(x2)-x_.get(x2-1));
+            int n = (int)Math.floor((x_.get(x2)-r2)/step_);
+            //不要全部减去了 至少r2的一个step留下
+            if(n>0) {
+                n--;
+            }
+            int number = (int)Math.round((x_.get(x2)-x_.get(x2-1))/step_);
+            double tmp = (double)(y_.get(x2-1))/(sum_*number)*n;
+            res-=tmp;
         }
         return res;
     }
