@@ -32,7 +32,7 @@ public class Test_ckn {
 //        for (int i = 1; i <= 6; i++) {
 //            x1.add((double) i);
 //        }
-//        List<Integer> y1 = new ArrayList<Integer>();
+//        List<Double> y1 = new ArrayList<Double>();
 //        for (int i = 1; i <= 5; i++) {
 //            y1.add(1);
 //        }
@@ -46,9 +46,9 @@ public class Test_ckn {
         for (int i = 1; i <= 11; i++) {
             x1.add((double) i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
+        List<Double> y1 = new ArrayList<Double>();
         for (int i = 1; i <= 10; i++) {
-            y1.add(1);
+            y1.add(1.0);
         }
         for (int i = 0; i < 8; i++) {
             Column_ian ck1 = new Column_ian(step1, x1, y1);

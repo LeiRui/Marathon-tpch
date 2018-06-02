@@ -1,39 +1,39 @@
 package common;
 
+import java.math.BigDecimal;
+
 public class Constant {
-//    public static String dataNum = "1600000";
-//    public static String dataNum = "8000000";
-//    public static String dataNum = "40000000";
-//    public static String dataNum = "1000000000";
-    public static String dataNum = "100000000";
-//    public static String dataNum = "200000000";
-//    public static String dataNum = "1000000000";
+    public static boolean isTranform =true; // 专门为tpch的c5和c7的从数字转换到真实的查询准备的
 
+    public static String dataNum = "1500000";
+//    public static String dataNum = "3000000";
+//    public static String dataNum = "4500000";
+//    public static String dataNum = "6000000";
+//    public static String dataNum = "7500000";
 
-//    public static String[] ckname = new String[]{"c1","c2","c4"}; // TODO!!
-//    public static boolean[] isInt = new boolean[]{true,true,false}; // TODO!!
-    public static String[] ckname = new String[]{"ck1","ck2","ck3","ck4","ck5","ck6","ck7","ck8","ck9","ck10"}; // TODO!!
-    public static boolean[] isInt = new boolean[]{true,true,true,true,true,true,true,true,true,true}; // TODO!!
+    public static boolean isGetSqls = true;
 
-    public static boolean isGetSqls = true; // TODO 记得改！！!!!!
+    public static String[] ckname = new String[]{"c2","c5","c7"}; // TODO!!
+    public static boolean[] isInt = new boolean[]{true, true, true}; // TODO!!
+
+    public static int RF = 3;
+
+    public static String ks = "tpch_ds1_loose";
+//    public static String ks = "tpch_ds2";
+//    public static String ks = "tpch_ds3";
+//    public static String ks = "tpch_ds4";
+//    public static String ks = "tpch_ds5";
 
     public static boolean isDiffReplica = true; // TODO 记得改这个！！！
-//    public static boolean isDiffReplica   =  false; // TODO 记得改这个！！！
+//        public static boolean isDiffReplica = false;
 
-    public static String ks = "exp_ckn";
-    //    public static String[] cf = new String[]{"defaulttable","defaulttable","defaulttable"};
-//    public static String[] cf = new String[]{"sameopt","sameopt","sameopt"};
-//    public static String[] cf = new String[]{"df1","df2","df3"};
+//    public static String[] cf = new String[]{"df1", "df2", "df3"};
+        public static String[] cf = new String[]{"sameopt", "sameopt", "sameopt"};
+//        public static String[] cf = new String[]{"defaulttable", "defaulttable", "defaulttable"};
+//    public static int[] pkey = new int[]{2, 3, 4};
+    public static int[] pkey = new int[]{1, 1, 1};
+//    public static int[] pkey = new int[]{13,13,13};
 
-    public static int RF = 1; // TODO 记得改这个！！！！！！！！！！！！！！
-
-    public static String[] cf = new String[]{"sameopt6", "sameopt6", "sameopt6"};
-//    public static String[] cf = new String[]{"df6_1", "df6_2", "df6_3"};
-    public static int[] pkey = new int[]{4,4,4};
-
-    //    public static String[] cf = new String[]{"df5_1","df5_2","df5_3","df5_4","df5_5"};
-//    public static String[] cf = new String[]{"sameopt","sameopt","sameopt","sameopt","sameopt"};
-//    public static String[] cf = new String[]{"defaulttable","defaulttable","defaulttable","defaulttable","defaulttable"};
 
     public static String SArecord = "SA_process_record.csv";
 

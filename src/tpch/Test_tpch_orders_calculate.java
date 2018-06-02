@@ -1,65 +1,66 @@
-package top;
+package tpch;
 
 import HModel.Column_ian;
+import HModel.H_ian;
 import SA.Unify_new_fast;
 import common.Constant;
 import queries.QueryPicture;
+import queries.RangeQuery;
+import replicas.AckSeq;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-orders
- */
-public class Test_tpch2 {
+public class Test_tpch_orders_calculate {
     public static void main(String[] args) {
         // 数据分布参数
-        BigDecimal totalRowNumber = new BigDecimal("1500000");
+//        BigDecimal totalRowNumber = new BigDecimal("1500000");
+//        BigDecimal totalRowNumber = new BigDecimal("3000000");
+        BigDecimal totalRowNumber = new BigDecimal("4500000");
 
         List<Column_ian> CKdist = new ArrayList<Column_ian>();
         double step1 = 1;
         List<Double> x1 = new ArrayList<Double>();
-        for (int i = 0; i <= 6000000; i=i+50000) {
+        for (int i = 1; i <= 6000001; i = i + 50000) {
             x1.add((double) i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
-        for (int i = 0; i < 6000000; i=i+50000) {
-            y1.add(1);
+        List<Double> y1 = new ArrayList<Double>();
+        for (int i = 1; i < 6000001; i = i + 50000) {
+            y1.add(1.0);
         }
         Column_ian ck1 = new Column_ian(step1, x1, y1);
         CKdist.add(ck1);
 
         double step2 = 1;
         List<Double> x2 = new ArrayList<Double>();
-        for (int i = 0; i <= 150000; i=i+1000) {
+        for (int i = 1; i <= 150001; i = i + 1000) {
             x2.add((double) i);
         }
-        List<Integer> y2 = new ArrayList<Integer>();
-        for (int i = 0; i < 150000; i=i+1000) {
-            y2.add(1);
+        List<Double> y2 = new ArrayList<Double>();
+        for (int i = 1; i < 150001; i = i + 1000) {
+            y2.add(1.0);
         }
         Column_ian ck2 = new Column_ian(step2, x2, y2);
         CKdist.add(ck2);
 
-
         //[246362 321103 312837 284007 203277 98551 28907 4593 350 13]
         double step3 = 0.01;
         List<Double> x3 = new ArrayList<Double>();
-        for (int i = 0; i <= 560000; i=i+56000) {
+        for (int i = 0; i <= 560000; i = i + 56000) {
             x3.add((double) i);
         }
-        List<Integer> y3 = new ArrayList<Integer>();
-        y3.add(246362);
-        y3.add(321103);
-        y3.add(312837);
-        y3.add(284007);
-        y3.add(203277);
-        y3.add(98551);
-        y3.add(28907);
-        y3.add(4593);
-        y3.add(350);
-        y3.add(13);
+        List<Double> y3 = new ArrayList<Double>();
+        y3.add(246.362);
+        y3.add(321.103);
+        y3.add(312.837);
+        y3.add(284.007);
+        y3.add(203.277);
+        y3.add(98.551);
+        y3.add(28.907);
+        y3.add(4.593);
+        y3.add(0.350);
+        y3.add(0.013);
 
         Column_ian ck3 = new Column_ian(step3, x3, y3);
         CKdist.add(ck3);
@@ -69,7 +70,7 @@ public class Test_tpch2 {
         // 查询参数
         double[][] starts = new double[ckn][];
         double[][] lengths = new double[ckn][];
-        int[] qpernum = new int[]{1,1,1};
+        int[] qpernum = new int[]{1, 1, 1};
         /*
         TODO: 当qck1的比重没有那么大的时候，无异构优化也会把ck1列放到中间，
         之前做实验的时候qperm在等比和极端之间没有过渡实验
@@ -88,16 +89,27 @@ public class Test_tpch2 {
         }
         QueryPicture queryPicture = new QueryPicture(starts, lengths, qpernum, 167);//167*3=501个
 
-        //控制变量
-        int X = Constant.RF;
+        int X = 3;
 
         Unify_new_fast unify = new Unify_new_fast(totalRowNumber,
                 ckn, CKdist,
-                Constant.rowSize, Constant.fetchRowCnt, Constant.costModel_k, Constant.costModel_b, Constant.cost_session_around, Constant.cost_request_around,
+                Constant.rowSize, Constant.fetchRowCnt, 1.95511, 16234.12061, Constant.cost_session_around, Constant.cost_request_around,
                 queryPicture,
                 X);
-        unify.isDiffReplicated = Constant.isDiffReplica;
-        unify.combine();
+        unify.isDiffReplicated = false;
+        unify.calculate_unit(new AckSeq[]{new AckSeq(new int[]{1,2,3}),
+                new AckSeq(new int[]{1,2,3}),
+                new AckSeq(new int[]{1,2,3})
+        });
+
+//        RangeQuery q = new RangeQuery(3, 483715, 894116, true, true,
+//                new double[]{3521173, 106279, 353557.47});
+//        H_ian h = new H_ian(totalRowNumber, ckn, CKdist,
+//                q.qckn, q.qck_r1_abs, q.qck_r2_abs, q.r1_closed, q.r2_closed, q.qck_p_abs,
+//                new int[]{3,1,2});
+//        double tmpCost = h.calculate(100, 1.95511, 16234.12061,
+//                Constant.cost_session_around, Constant.cost_request_around);
+//        System.out.println(tmpCost);
 
     }
 }

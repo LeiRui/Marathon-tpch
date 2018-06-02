@@ -154,7 +154,9 @@ public class H_ian {
                 resP *= ACKdist.get(qackn).getBetween(qck_r1, qck_r2, Column_ian.rangeType.LoRo);
                 break;
         }
+//        System.out.println("resP："+resP);
         BigDecimal candidate_rows_cnt = totalRowNumber.multiply(new BigDecimal(resP)); // 候选集行数估计
+
         for (int i = qackn+1; i < ckn; i++) {
             resP *= ACKdist.get(i).getPoint(qack_p[i]);
         }
@@ -171,6 +173,7 @@ public class H_ian {
 
         BigDecimal res = new BigDecimal(cost_session_around).add(cost_part).add(candidate_rows_cnt.multiply(new BigDecimal(costModel_k)));
         res = res.divide(new BigDecimal("1000000")); // unit:s
+//        System.out.println("res: "+res.doubleValue());
         return res.doubleValue();
     }
 

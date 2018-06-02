@@ -8,7 +8,7 @@ import java.util.List;
 public class Column_ian {
     public double step_;
     private List<Double> x_;
-    private List<Integer> y_;
+    private List<Double> y_;
     public double xmin_;
     public double xmax_;
     private int sum_;
@@ -19,14 +19,14 @@ public class Column_ian {
      * @param x  note: x比y多一项，因为y是每段的值，x是标点，x最后一个是取不到的终止位
      * @param y
      */
-    public Column_ian(double step, List<Double> x, List<Integer> y) {
+    public Column_ian(double step, List<Double> x, List<Double> y) {
         this.step_ = step;
         this.x_ = x;
         this.y_ = y;
         this.xmin_= x.get(0);
         this.xmax_ = x.get(x.size()-1); // TODO 这个x的结束位真是有些些麻烦
         sum_=0;
-        for(int num: y_) {
+        for(double num: y_) {
             sum_+=num;
         }
     }
@@ -41,7 +41,7 @@ public class Column_ian {
         int number = (int)Math.round((x_.get(index+1)-x_.get(index))/step_);
         // TODO mind if query some like 1.1 while there is no 1.1 then actually it is fast, so do not test [point query] nonexist
         // TODO mind when step is very small
-        return (double)(y_.get(index))/(sum_*number);
+        return (double)(y_.get(index))/sum_/number;
     }
 
     public enum rangeType {
@@ -68,7 +68,12 @@ public class Column_ian {
         int x1=0,x2=0;
         boolean isx1=false;
         int i = 0;
+        int left=0;
         for (; i < x_.size()-1; i++) {
+            if(x_.get(i)<r1) {
+                left = i;
+            }
+
             if(isIn(x_.get(i),r1,r2,type)) {
                 if(!isx1) { // 第一个落到的
                     x1=i;
@@ -81,17 +86,24 @@ public class Column_ian {
                 break;
             }
         }
+        if(!isx1) { // 没有分割点落在这个range，换句话说这个range之落到一个interval内
+//            int number = (int)Math.round((x_.get(left+1)-x_.get(left))/step_);
+//            double tmpStep = (double)(y_.get(left))/(sum_*number);
+            res = (y_.get(left))/sum_*(r2-r1)/(x_.get(left+1)-x_.get(left));
+            return res;
+        }
+
         if(i==x_.size()-1) {
             if(!isIn(x_.get(i),r1,r2,type)){
                 x2=i;
             }
         }
-        //添加r1到x1之间的
+        //添加r1到x_.get(x1)之间的
         if(x1>0) {
 //            double tmp = (double)(y_.get(x1-1))/sum_*(double)(r1-x_.get(x1))/(x_.get(x1)-x_.get(x1-1));
-            int n = (int)Math.floor((r1-x_.get(x1))/step_);
-            int number = (int)Math.round((x_.get(x1)-x_.get(x1-1))/step_);
-            double tmp = (double)(y_.get(x1-1))/(sum_*number)*n;
+            long n = (long)Math.floor((x_.get(x1)-r1)/step_);
+            long number = (long)Math.round((x_.get(x1)-x_.get(x1-1))/step_);
+            double tmp = (double)(y_.get(x1-1))/sum_/number*n;
             res+=tmp;
         }
         //减去x2到r2之间的
@@ -103,7 +115,7 @@ public class Column_ian {
                 n--;
             }
             int number = (int)Math.round((x_.get(x2)-x_.get(x2-1))/step_);
-            double tmp = (double)(y_.get(x2-1))/(sum_*number)*n;
+            double tmp = (double)(y_.get(x2-1))/sum_/number*n;
             res-=tmp;
         }
         return res;

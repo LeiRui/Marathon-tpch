@@ -36,7 +36,7 @@ public class Test1 {
 //        for (int i = 1; i <= 6; i++) {
 //            x1.add((double) i);
 //        }
-//        List<Integer> y1 = new ArrayList<Integer>();
+//        List<Double> y1 = new ArrayList<Double>();
 //        for (int i = 1; i <= 5; i++) {
 //            y1.add(1);
 //        }
@@ -45,14 +45,14 @@ public class Test1 {
 //            CKdist.add(ck1);
 //        }
 
-        double step1 = 0.1;
+        double step1 = 1;
         List<Double> x1 = new ArrayList<Double>();
         for (int i = 1; i <= 11; i++) {
             x1.add((double) i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
+        List<Double> y1 = new ArrayList<Double>();
         for (int i = 1; i <= 10; i++) {
-            y1.add(1);
+            y1.add(1.0);
         }
         for (int i = 0; i < 8; i++) {
             Column_ian ck1 = new Column_ian(step1, x1, y1);
@@ -88,7 +88,7 @@ public class Test1 {
         QueryPicture queryPicture = new QueryPicture(starts, lengths, qpernum, 10);//80*10=800个查询
 
         //控制变量
-        int X = 5;
+        int X = 3;
 
         Unify_new_fast unify = new Unify_new_fast(totalRowNumber,
                 ckn, CKdist,

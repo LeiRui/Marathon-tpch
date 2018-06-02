@@ -21,9 +21,9 @@ public class Test_ckn2_calculate {
         for (int i = 1; i <= 3163; i++) {
             x1.add((double) i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
+        List<Double> y1 = new ArrayList<Double>();
         for (int i = 1; i <= 3162; i++) {
-            y1.add(1);
+            y1.add(1.0);
         }
         for (int i = 0; i < 2; i++) {
             Column_ian ck1 = new Column_ian(step1, x1, y1);

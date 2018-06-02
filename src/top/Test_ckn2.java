@@ -26,7 +26,7 @@ public class Test_ckn2 {
 //        for (int i = 1; i <= 9; i++) {
             x1.add((double) i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
+        List<Double> y1 = new ArrayList<Double>();
 //        for (int i = 1; i <= 3162; i++) {
 //        for (int i = 1; i <= 215; i++) {
 //        for (int i = 1; i <= 56; i++) {
@@ -34,7 +34,7 @@ public class Test_ckn2 {
         for (int i = 1; i <= 15; i++) {
 //        for (int i = 1; i <= 10; i++) {
 //        for (int i = 1; i <= 8; i++) {
-            y1.add(1);
+            y1.add(1.0);
         }
 //        for (int i = 0; i < 2; i++) {
 //        for (int i = 0; i < 3; i++) {

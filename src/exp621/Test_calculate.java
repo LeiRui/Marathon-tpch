@@ -24,9 +24,9 @@ public class Test_calculate{
             for (int i = 1; i <= 101; i++) {
                 x.add((double) i);
             }
-            List<Integer> y = new ArrayList<Integer>();
+            List<Double> y = new ArrayList<Double>();
             for (int i = 1; i <= 100; i++) {
-                y.add(1);
+                y.add(1.0);
             }
             Column_ian ck1 = new Column_ian(step, x, y);
             Column_ian ck2 = new Column_ian(step, x, y);

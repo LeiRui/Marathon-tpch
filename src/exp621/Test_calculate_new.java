@@ -21,9 +21,9 @@ public class Test_calculate_new {
         for(int i = 1; i<=11; i++) {
             x1.add((double)i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
+        List<Double> y1 = new ArrayList<Double>();
         for(int i = 1; i<=10; i++) {
-            y1.add(1);
+            y1.add(1.0);
         }
         for(int i=0;i<2;i++) {
             Column_ian ck1 = new Column_ian(step1, x1, y1);
@@ -34,9 +34,9 @@ public class Test_calculate_new {
         for(int i = 1; i<=100001; i++) {
             x2.add((double)i);
         }
-        List<Integer> y2 = new ArrayList<Integer>();
+        List<Double> y2 = new ArrayList<Double>();
         for(int i = 1; i<=100000; i++) {
-            y2.add(1);
+            y2.add(1.0);
         }
         Column_ian ck2 = new Column_ian(step2, x2, y2);
         CKdist.add(ck2);

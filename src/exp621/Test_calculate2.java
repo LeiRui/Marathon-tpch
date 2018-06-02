@@ -24,9 +24,9 @@ public class Test_calculate2{
         for(int i = 1; i<=11; i++) {
             x1.add((double)i);
         }
-        List<Integer> y1 = new ArrayList<Integer>();
+        List<Double> y1 = new ArrayList<Double>();
         for(int i = 1; i<=10; i++) {
-            y1.add(1);
+            y1.add(1.0);
         }
         Column_ian ck1 = new Column_ian(step1, x1, y1);
 
@@ -35,9 +35,9 @@ public class Test_calculate2{
         for(int i = 1; i<=21; i++) {
             x2.add((double)i);
         }
-        List<Integer> y2 = new ArrayList<Integer>();
+        List<Double> y2 = new ArrayList<Double>();
         for(int i = 1; i<=20; i++) {
-            y2.add(1);
+            y2.add(1.0);
         }
         Column_ian ck2 = new Column_ian(step2, x2, y2);
 
@@ -46,9 +46,9 @@ public class Test_calculate2{
         for(int i = 1; i<=31; i++) {
             x3.add((double)i);
         }
-        List<Integer> y3 = new ArrayList<Integer>();
+        List<Double> y3 = new ArrayList<Double>();
         for(int i = 1; i<=30; i++) {
-            y3.add(1);
+            y3.add(1.0);
         }
         Column_ian ck3 = new Column_ian(step3, x3, y3);
 
@@ -57,9 +57,9 @@ public class Test_calculate2{
         for(int i = 1; i<=41; i++) {
             x4.add((double)i);
         }
-        List<Integer> y4 = new ArrayList<Integer>();
+        List<Double> y4 = new ArrayList<Double>();
         for(int i = 1; i<=40; i++) {
-            y4.add(1);
+            y4.add(1.0);
         }
         Column_ian ck4 = new Column_ian(step4, x4, y4);
 
@@ -68,9 +68,9 @@ public class Test_calculate2{
         for(int i = 1; i<=51; i++) {
             x5.add((double)i);
         }
-        List<Integer> y5 = new ArrayList<Integer>();
+        List<Double> y5 = new ArrayList<Double>();
         for(int i = 1; i<=50; i++) {
-            y5.add(1);
+            y5.add(1.0);
         }
         Column_ian ck5 = new Column_ian(step5, x5, y5);
 
@@ -79,9 +79,9 @@ public class Test_calculate2{
         for(int i = 1; i<=61; i++) {
             x6.add((double)i);
         }
-        List<Integer> y6 = new ArrayList<Integer>();
+        List<Double> y6 = new ArrayList<Double>();
         for(int i = 1; i<=60; i++) {
-            y6.add(1);
+            y6.add(1.0);
         }
         Column_ian ck6 = new Column_ian(step6, x6, y6);
 
@@ -90,9 +90,9 @@ public class Test_calculate2{
         for(int i = 1; i<=71; i++) {
             x7.add((double)i);
         }
-        List<Integer> y7 = new ArrayList<Integer>();
+        List<Double> y7 = new ArrayList<Double>();
         for(int i = 1; i<=70; i++) {
-            y7.add(1);
+            y7.add(1.0);
         }
         Column_ian ck7 = new Column_ian(step7, x7, y7);
 
@@ -101,9 +101,9 @@ public class Test_calculate2{
         for(int i = 1; i<=71; i++) {
             x8.add((double)i);
         }
-        List<Integer> y8 = new ArrayList<Integer>();
+        List<Double> y8 = new ArrayList<Double>();
         for(int i = 1; i<=70; i++) {
-            y8.add(1);
+            y8.add(1.0);
         }
         Column_ian ck8 = new Column_ian(step8, x8, y8);
 
@@ -112,9 +112,9 @@ public class Test_calculate2{
         for(int i = 1; i<=71; i++) {
             x9.add((double)i);
         }
-        List<Integer> y9 = new ArrayList<Integer>();
+        List<Double> y9 = new ArrayList<Double>();
         for(int i = 1; i<=70; i++) {
-            y9.add(1);
+            y9.add(1.0);
         }
         Column_ian ck9 = new Column_ian(step9, x9, y9);
 
@@ -123,9 +123,9 @@ public class Test_calculate2{
         for(int i = 1; i<=71; i++) {
             x10.add((double)i);
         }
-        List<Integer> y10 = new ArrayList<Integer>();
+        List<Double> y10 = new ArrayList<Double>();
         for(int i = 1; i<=70; i++) {
-            y10.add(1);
+            y10.add(1.0);
         }
         Column_ian ck10 = new Column_ian(step10, x10, y10);
         CKdist.add(ck1);
